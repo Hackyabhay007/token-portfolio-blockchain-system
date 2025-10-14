@@ -7,20 +7,22 @@
 
 :root {
   /* Background Colors */
-  --bg-primary: #1a1d26;
-  --bg-secondary: #23262f;
+  --bg-primary: #212124;
+  --bg-secondary: #27272A;
   --bg-tertiary: #2d3139;
   --bg-modal: #1f2128;
   --bg-hover: rgba(45, 49, 57, 0.3);
+  --bg-component: #27272A;
+  --neutral-800: #27272A;
   
   /* Text Colors */
   --text-primary: #ffffff;
-  --text-secondary: #9ca3af;
+  --text-secondary: #A1A1AA;
   --text-tertiary: #6b7280;
   --text-muted: #4b5563;
   
   /* Accent Colors */
-  --accent-primary: #a3e635;
+  --accent-primary: #A9E851;
   --accent-hover: #bef264;
   
   /* Status Colors */
