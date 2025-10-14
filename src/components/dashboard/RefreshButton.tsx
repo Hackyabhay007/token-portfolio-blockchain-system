@@ -14,7 +14,7 @@ export const RefreshButton = ({ onClick, isRefreshing, disabled }: RefreshButton
       disabled={disabled}
       isLoading={isRefreshing}
       icon={
-        <img src="/assets/refresh.svg" alt="Refresh" className="w-4 h-4" />
+        <img src="/assets/refresh.svg" alt="Refresh" style={{ width: '15px', height: '15px' }} />
       }
     >
       Refresh Prices

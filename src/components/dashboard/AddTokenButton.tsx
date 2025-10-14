@@ -10,7 +10,7 @@ export const AddTokenButton = ({ onClick }: AddTokenButtonProps) => {
       variant="primary"
       onClick={onClick}
       icon={
-        <img src="/assets/plus.svg" alt="Add" className="w-4 h-4" />
+        <img src="/assets/plus.svg" alt="Add" style={{ width: '15px', height: '15px' }} />
       }
     >
       Add Token
