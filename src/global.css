@@ -1,0 +1,87 @@
+@import "tailwindcss";
+@import '@rainbow-me/rainbowkit/styles.css';
+
+:root {
+  /* Background Colors */
+  --bg-primary: #1a1d26;
+  --bg-secondary: #23262f;
+  --bg-tertiary: #2d3139;
+  --bg-modal: #1f2128;
+  --bg-hover: rgba(45, 49, 57, 0.3);
+  
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-tertiary: #6b7280;
+  --text-muted: #4b5563;
+  
+  /* Accent Colors */
+  --accent-primary: #a3e635;
+  --accent-hover: #bef264;
+  
+  /* Status Colors */
+  --color-positive: #10b981;
+  --color-negative: #ef4444;
+  
+  /* Border Colors */
+  --border-primary: #374151;
+  --border-secondary: rgba(55, 65, 81, 0.5);
+  
+  /* Chart Colors */
+  --chart-purple: #8b5cf6;
+  --chart-orange: #f97316;
+  --chart-cyan: #06b6d4;
+  --chart-green: #10b981;
+  --chart-red: #ef4444;
+  --chart-yellow: #f59e0b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d4149;
+}
