@@ -1,4 +1,4 @@
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { CustomConnectButton } from './CustomConnectButton';
 
 export const Header = () => {
   return (
@@ -23,7 +23,7 @@ export const Header = () => {
             <h1 className="text-xl font-semibold">Token Portfolio</h1>
           </div>
 
-          <ConnectButton />
+          <CustomConnectButton />
         </div>
       </div>
     </header>

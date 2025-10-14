@@ -3,12 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { updatePrices } from '../store/portfolioSlice';
 import { coinGeckoApi } from '../services/coinGeckoApi';
-import { 
-  PortfolioTotal, 
-  WatchlistTable, 
-  WatchlistActions, 
-  AddTokenModal 
-} from '../components/dashboard';
+import { PortfolioTotal } from '../components/dashboard/PortfolioTotal';
+import { WatchlistTable } from '../components/dashboard/WatchlistTable';
+import { WatchlistActions } from '../components/dashboard/WatchlistActions';
+import { AddTokenModal } from '../components/dashboard/AddTokenModal';
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
