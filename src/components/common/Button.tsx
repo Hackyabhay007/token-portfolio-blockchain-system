@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'danger';
   children: ReactNode;
   icon?: ReactNode;
   isLoading?: boolean;
@@ -16,18 +16,32 @@ export const Button = ({
   className = '',
   ...props 
 }: ButtonProps) => {
-  const baseStyles = "px-4 py-2 font-semibold rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles = "px-6 font-semibold transition-colors flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variantStyles = {
     primary: {
       backgroundColor: 'var(--accent-primary)',
       color: '#000000',
       hoverColor: 'var(--accent-hover)',
+      borderRadius: '12px',
+      height: '36px',
+      fontSize: '14px',
     },
     secondary: {
       backgroundColor: 'var(--bg-tertiary)',
       color: 'var(--text-primary)',
       hoverColor: '#3d4149',
+      borderRadius: '12px',
+      height: '36px',
+      fontSize: '14px',
+    },
+    danger: {
+      backgroundColor: '#EF4444',
+      color: '#FFFFFF',
+      hoverColor: '#DC2626',
+      borderRadius: '12px',
+      height: '36px',
+      fontSize: '14px',
     },
   };
 
@@ -39,6 +53,9 @@ export const Button = ({
       style={{
         backgroundColor: currentVariant.backgroundColor,
         color: currentVariant.color,
+        borderRadius: currentVariant.borderRadius,
+        height: currentVariant.height,
+        fontSize: currentVariant.fontSize,
       }}
       onMouseEnter={(e) => {
         if (!disabled && !isLoading) {

@@ -43,33 +43,25 @@ export const WatchlistTable = () => {
   };
 
   return (
-    <div className="bg-[#23262f] rounded-2xl overflow-hidden">
-      {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-700">
-        <div className="flex items-center gap-2">
-          <img src="/assets/star.svg" alt="Star" className="w-5 h-5" />
-          <span className="text-xl font-semibold">Watchlist</span>
-        </div>
-      </div>
-
+    <div className="overflow-hidden" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(161, 161, 170, 0.2)' }}>
       {/* Table */}
       {watchlist.length === 0 ? (
-        <div className="px-6 py-12 text-center text-gray-500">
+        <div className="px-6 py-12 text-center" style={{ color: 'var(--text-secondary)' }}>
           No tokens in watchlist. Click "Add Token" to get started.
         </div>
       ) : (
         <>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead>
-                <tr className="text-left text-sm text-gray-400 border-b border-gray-700">
-                  <th className="px-6 py-3 font-medium">Token</th>
-                  <th className="px-6 py-3 font-medium">Price</th>
-                  <th className="px-6 py-3 font-medium">24h %</th>
-                  <th className="px-6 py-3 font-medium">Sparkline (7d)</th>
-                  <th className="px-6 py-3 font-medium">Holdings</th>
-                  <th className="px-6 py-3 font-medium">Value</th>
-                  <th className="px-6 py-3 font-medium"></th>
+              <thead style={{ backgroundColor: 'var(--bg-component)' }}>
+                <tr className="text-left" style={{ color: 'var(--text-secondary)', borderBottom: '1px solid rgba(161, 161, 170, 0.2)' }}>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}>Token</th>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}>Price</th>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}>24h %</th>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}>Sparkline (7d)</th>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}>Holdings</th>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}>Value</th>
+                  <th className="px-6 py-4" style={{ fontSize: '14px', fontWeight: 500 }}></th>
                 </tr>
               </thead>
               <tbody>
@@ -81,27 +73,32 @@ export const WatchlistTable = () => {
                   return (
                     <tr
                       key={token.id}
-                      className="border-b border-gray-700/50 hover:bg-gray-800/30 transition-colors"
+                      className="transition-colors"
+                      style={{ 
+                        backgroundColor: 'var(--bg-primary)',
+                        height: '48px',
+                        paddingLeft: '24px',
+                        paddingRight: '24px'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.05)'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
                     >
                       {/* Token */}
-                      <td className="px-6 py-4">
+                      <td style={{ paddingLeft: '24px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
                         <div className="flex items-center gap-3">
                           <img
                             src={token.image}
                             alt={token.name}
                             className="w-8 h-8 rounded-full"
                           />
-                          <div>
-                            <div className="font-medium">{token.name}</div>
-                            <div className="text-sm text-gray-400">
-                              {token.symbol.toUpperCase()}
-                            </div>
+                          <div style={{ fontSize: '14px', fontWeight: 400 }}>
+                            {token.name} <span style={{ color: 'var(--text-secondary)' }}>({token.symbol.toUpperCase()})</span>
                           </div>
                         </div>
                       </td>
 
                       {/* Price */}
-                      <td className="px-6 py-4 font-medium">
+                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', fontSize: '14px', fontWeight: 400 }}>
                         ${token.current_price.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -109,11 +106,13 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* 24h % */}
-                      <td className="px-6 py-4">
+                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
                         <span
-                          className={`font-medium ${
-                            isPositive ? 'text-green-500' : 'text-red-500'
-                          }`}
+                          style={{
+                            fontSize: '14px',
+                            fontWeight: 400,
+                            color: isPositive ? '#10B981' : '#EF4444'
+                          }}
                         >
                           {isPositive ? '+' : ''}
                           {token.price_change_percentage_24h.toFixed(2)}%
@@ -121,8 +120,8 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* Sparkline */}
-                      <td className="px-6 py-4">
-                        <div className="w-32 h-12">
+                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
+                        <div className="w-32 h-10">
                           {token.sparkline_in_7d?.price ? (
                             <Sparkline
                               data={token.sparkline_in_7d.price}
@@ -135,24 +134,36 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* Holdings */}
-                      <td className="px-6 py-4">
+                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
                         {editingId === token.id ? (
-                          <div className="flex items-center gap-2">
-                            <div className="relative">
+                          <div className="flex items-center gap-3">
+                            <div className="relative" style={{
+                              padding: '3px',
+                              background: 'var(--accent-primary)',
+                              borderRadius: '16px'
+                            }}>
                               <input
                                 type="number"
                                 value={editValue}
                                 onChange={(e) => setEditValue(e.target.value)}
                                 onKeyDown={(e) => handleKeyPress(e, token.id)}
-                                className="w-32 px-3 py-1.5 bg-[#2d3139] border border-gray-600 rounded-md text-sm focus:outline-none focus:border-[#a3e635] appearance-none"
+                                className="px-4 py-3 text-base focus:outline-none appearance-none"
+                                style={{ 
+                                  width: '280px',
+                                  backgroundColor: 'var(--bg-tertiary)', 
+                                  border: '2px solid var(--accent-primary)',
+                                  borderRadius: '12px',
+                                  color: 'var(--text-primary)'
+                                }}
                                 placeholder="Select"
                                 autoFocus
                               />
                               <svg
-                                className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
+                                style={{ color: 'var(--text-secondary)' }}
                               >
                                 <path
                                   strokeLinecap="round"
@@ -164,7 +175,13 @@ export const WatchlistTable = () => {
                             </div>
                             <button
                               onClick={() => handleSaveHoldings(token.id)}
-                              className="px-4 py-1.5 bg-[#a3e635] text-black text-sm font-semibold rounded-md hover:bg-[#bef264] transition-colors"
+                              className="px-8 py-3 text-black text-lg font-semibold transition-colors"
+                              style={{ 
+                                backgroundColor: 'var(--accent-primary)',
+                                borderRadius: '12px'
+                              }}
+                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-hover)'}
+                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-primary)'}
                             >
                               Save
                             </button>
@@ -172,7 +189,10 @@ export const WatchlistTable = () => {
                         ) : (
                           <button
                             onClick={() => handleEditHoldings(token.id, token.holdings)}
-                            className="text-left hover:text-[#a3e635] transition-colors"
+                            className="text-left transition-colors"
+                            style={{ fontSize: '14px', fontWeight: 400 }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = 'var(--accent-primary)'}
+                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
                           >
                             {token.holdings.toFixed(4)}
                           </button>
@@ -180,7 +200,7 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* Value */}
-                      <td className="px-6 py-4 font-medium">
+                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', fontSize: '14px', fontWeight: 400 }}>
                         ${value.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -188,7 +208,7 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* Menu */}
-                      <td className="px-6 py-4">
+                      <td style={{ paddingLeft: '12px', paddingRight: '24px', paddingTop: '12px', paddingBottom: '12px' }}>
                         <div className="relative">
                           <button
                             onClick={() =>
@@ -231,26 +251,40 @@ export const WatchlistTable = () => {
           </div>
 
           {/* Pagination */}
-          <div className="px-6 py-4 flex items-center justify-between border-t border-gray-700">
-            <div className="text-sm text-gray-400">
+          <div className="px-6 py-4 flex items-center justify-between" style={{ backgroundColor: 'var(--bg-primary)', borderTop: '1px solid rgba(161, 161, 170, 0.2)' }}>
+            <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
               {startIndex + 1} — {Math.min(endIndex, watchlist.length)} of{' '}
               {watchlist.length} results
             </div>
-            <div className="flex items-center gap-2">
-              <div className="text-sm text-gray-400 mr-2">
+            <div className="flex items-center gap-6">
+              <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
                 {currentPage} of {totalPages} pages
               </div>
               <button
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
-                className="px-3 py-1 text-sm rounded bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ 
+                  fontSize: '14px',
+                  color: currentPage === 1 ? 'var(--text-secondary)' : 'var(--text-primary)',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: 0
+                }}
               >
                 Prev
               </button>
               <button
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
-                className="px-3 py-1 text-sm rounded bg-gray-700 hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{ 
+                  fontSize: '14px',
+                  color: currentPage === totalPages ? 'var(--text-secondary)' : 'var(--text-primary)',
+                  background: 'transparent',
+                  border: 'none',
+                  padding: 0
+                }}
               >
                 Next
               </button>

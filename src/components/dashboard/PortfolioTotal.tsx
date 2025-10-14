@@ -37,30 +37,34 @@ export const PortfolioTotal = () => {
   }));
 
   return (
-    <div className="mb-8 relative" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', padding: '24px' }}>
-      <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: '19px' }}>
-        {/* Left side - Total Value */}
-        <div>
-          <div className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
-          <div 
-            className="font-medium"
-            style={{ 
-              fontSize: '56px',
-              lineHeight: '110%',
-              letterSpacing: '-0.0224em',
-              fontWeight: 500
-            }}
-          >
-            ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-          </div>
+    <div className="mb-4 sm:mb-8 relative" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', padding: '16px', paddingBottom: lastUpdated ? '40px' : '16px' }}>
+      {/* Total Value - Always on top */}
+      <div className="mb-6">
+        <div className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
+        <div 
+          className="font-medium"
+          style={{ 
+            fontSize: '40px',
+            lineHeight: '110%',
+            letterSpacing: '-0.0224em',
+            fontWeight: 500
+          }}
+        >
+          ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </div>
+        {lastUpdated && (
+          <div className="text-xs mt-2" style={{ color: 'var(--text-secondary)' }}>
+            Last updated: {lastUpdated}
+          </div>
+        )}
+      </div>
 
-        {/* Right side - Donut Chart */}
-        <div>
-          <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
-          <div className="flex items-center gap-8">
-            {/* Chart */}
-            <div className="w-40 h-40 flex-shrink-0">
+      {/* Chart Section */}
+      <div>
+        <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
+        <div className="flex flex-col sm:flex-row items-center sm:gap-8 gap-6">
+          {/* Chart */}
+          <div className="w-48 h-48 sm:w-40 sm:h-40 flex-shrink-0">
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -109,14 +113,6 @@ export const PortfolioTotal = () => {
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Last updated - bottom left corner */}
-      {lastUpdated && (
-        <div className="absolute bottom-6 left-8 text-xs" style={{ color: 'var(--text-secondary)' }}>
-          Last updated: {lastUpdated}
-        </div>
-      )}
     </div>
   );
 };

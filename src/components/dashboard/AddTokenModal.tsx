@@ -150,48 +150,35 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-      <div className="bg-[#1f2128] rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl border border-gray-800">
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">Add Token</h2>
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-white transition-colors"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
-        </div>
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+      <div 
+        className="flex flex-col w-full modal-container"
+        style={{
+          backgroundColor: 'var(--bg-primary)',
+          borderRadius: '12px',
+          border: '1px solid rgba(161, 161, 170, 0.2)',
+          boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.8)',
+          maxWidth: '960px',
+          maxHeight: '80vh'
+        }}
+      >
         {/* Search */}
-        <div className="px-6 py-4 border-b border-gray-700">
+        <div style={{ paddingTop: '12px', paddingRight: '16px', paddingBottom: '12px', paddingLeft: '16px' }}>
           <div className="relative">
-            <svg
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tokens (e.g., ETH, SOL)..."
-              className="w-full pl-10 pr-4 py-2.5 bg-[#2d3139] border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-[#a3e635] transition-colors"
+              className="w-full px-4 py-3 text-white focus:outline-none transition-colors"
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                borderBottom: '1px solid rgba(161, 161, 170, 0.2)',
+                borderRadius: '0',
+                fontSize: '16px',
+                color: 'var(--text-secondary)'
+              }}
             />
           </div>
         </div>
@@ -205,7 +192,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           {/* Trending Section */}
           {!searchQuery && trendingTokens.length > 0 && (
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-400 mb-3">🔥 Trending</h3>
+              <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
               <div className="space-y-1">
                 {trendingTokens.map((token) => (
                   <TokenRow
@@ -250,7 +237,16 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-700 flex items-center justify-between">
+        <div className="flex items-center justify-between" style={{ 
+          borderTop: '1px solid rgba(161, 161, 170, 0.2)',
+          backgroundColor: 'var(--neutral-800)',
+          paddingTop: '12px',
+          paddingRight: '16px',
+          paddingBottom: '12px',
+          paddingLeft: '16px',
+          height: '52px',
+          gap: '12px'
+        }}>
           <div className="text-sm text-gray-500">
             {selectedTokens.size > 0 ? (
               <>
@@ -263,9 +259,27 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           <button
             onClick={handleAddToWatchlist}
             disabled={selectedTokens.size === 0}
-            className="px-6 py-2.5 bg-[#a3e635] text-black font-semibold rounded-lg hover:bg-[#bef264] disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors"
+            className="text-black font-semibold transition-colors disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: selectedTokens.size === 0 ? 'var(--bg-tertiary)' : '#A9E851',
+              color: selectedTokens.size === 0 ? 'var(--text-secondary)' : '#000000',
+              borderRadius: '12px',
+              padding: '10px 24px',
+              fontSize: '14px',
+              height: '36px'
+            }}
+            onMouseEnter={(e) => {
+              if (selectedTokens.size > 0) {
+                e.currentTarget.style.backgroundColor = '#bef264';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (selectedTokens.size > 0) {
+                e.currentTarget.style.backgroundColor = '#A9E851';
+              }
+            }}
           >
-            Add to Watchlist
+            Add to Wishlist
           </button>
         </div>
       </div>
@@ -283,7 +297,25 @@ const TokenRow = ({ token, isSelected, onToggle }: TokenRowProps) => {
   return (
     <button
       onClick={onToggle}
-      className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-800/50 transition-colors"
+      className="w-full flex items-center transition-colors"
+      style={{
+        borderRadius: '6px',
+        backgroundColor: isSelected ? '#A9E8510F' : 'transparent',
+        paddingTop: '8px',
+        paddingRight: '8px',
+        paddingBottom: '8px',
+        paddingLeft: '8px',
+        gap: '12px',
+        height: '44px'
+      }}
+      onMouseEnter={(e) => {
+        if (!isSelected) {
+          e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.05)';
+        }
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = isSelected ? '#A9E8510F' : 'transparent';
+      }}
     >
       <img src={token.image} alt={token.name} className="w-8 h-8 rounded-full" />
       <div className="flex-1 text-left">

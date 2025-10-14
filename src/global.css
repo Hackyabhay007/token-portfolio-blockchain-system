@@ -87,3 +87,22 @@ input[type="number"] {
 ::-webkit-scrollbar-thumb:hover {
   background: #3d4149;
 }
+
+/* Modal responsive styles */
+@media (min-width: 640px) {
+  .modal-container {
+    width: 640px;
+  }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  /* Ensure proper mobile viewport */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+}
