@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
-import { updateHoldings, removeTokenFromWatchlist } from '../store/portfolioSlice';
+import type { RootState } from '../../store/store';
+import { updateHoldings, removeTokenFromWatchlist } from '../../store/portfolioSlice';
 import { Sparkline } from './Sparkline';
 
 export const WatchlistTable = () => {

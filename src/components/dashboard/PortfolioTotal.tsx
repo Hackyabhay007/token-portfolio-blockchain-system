@@ -1,11 +1,24 @@
 import { useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
+import type { RootState } from '../../store/store';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
-const COLORS = ['#8B5CF6', '#F97316', '#06B6D4', '#10B981', '#EF4444', '#F59E0B'];
+// Get colors from CSS variables
+const getChartColors = () => {
+  const root = document.documentElement;
+  const style = getComputedStyle(root);
+  return [
+    style.getPropertyValue('--chart-purple').trim() || '#8b5cf6',
+    style.getPropertyValue('--chart-orange').trim() || '#f97316',
+    style.getPropertyValue('--chart-cyan').trim() || '#06b6d4',
+    style.getPropertyValue('--chart-green').trim() || '#10b981',
+    style.getPropertyValue('--chart-red').trim() || '#ef4444',
+    style.getPropertyValue('--chart-yellow').trim() || '#f59e0b',
+  ];
+};
 
 export const PortfolioTotal = () => {
   const { watchlist, lastUpdated } = useSelector((state: RootState) => state.portfolio);
+  const COLORS = getChartColors();
 
   const portfolioData = watchlist
     .filter((token) => token.holdings > 0)
@@ -26,19 +39,19 @@ export const PortfolioTotal = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
       {/* Left side - Total Value */}
-      <div className="bg-[#23262f] rounded-2xl p-6">
-        <div className="text-sm text-gray-400 mb-2">Portfolio Total</div>
+      <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+        <div className="text-sm mb-2" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
         <div className="text-5xl font-semibold mb-6">
           ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </div>
         {lastUpdated && (
-          <div className="text-xs text-gray-500">Last updated: {lastUpdated}</div>
+          <div className="text-xs" style={{ color: 'var(--text-muted)' }}>Last updated: {lastUpdated}</div>
         )}
       </div>
 
       {/* Right side - Donut Chart */}
-      <div className="bg-[#23262f] rounded-2xl p-6">
-        <div className="text-sm text-gray-400 mb-4">Portfolio Total</div>
+      <div className="rounded-2xl p-6" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+        <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
         <div className="flex items-center gap-6">
           {/* Chart */}
           <div className="w-40 h-40">
@@ -62,7 +75,7 @@ export const PortfolioTotal = () => {
               </ResponsiveContainer>
             ) : (
               <div className="w-full h-full flex items-center justify-center">
-                <div className="w-32 h-32 rounded-full border-8 border-gray-700"></div>
+                <div className="w-32 h-32 rounded-full border-8" style={{ borderColor: 'var(--border-primary)' }}></div>
               </div>
             )}
           </div>
@@ -76,15 +89,15 @@ export const PortfolioTotal = () => {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: item.color }}
                   ></div>
-                  <span className="text-gray-300">
+                  <span style={{ color: 'var(--text-primary)' }}>
                     {item.name} ({item.symbol.toUpperCase()})
                   </span>
                 </div>
-                <span className="text-gray-400">{item.percentage}%</span>
+                <span style={{ color: 'var(--text-secondary)' }}>{item.percentage}%</span>
               </div>
             ))}
             {chartData.length === 0 && (
-              <div className="text-gray-500 text-sm">No holdings yet</div>
+              <div className="text-sm" style={{ color: 'var(--text-muted)' }}>No holdings yet</div>
             )}
           </div>
         </div>

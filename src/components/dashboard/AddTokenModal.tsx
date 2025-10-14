@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTokensToWatchlist } from '../store/portfolioSlice';
-import type { Token } from '../store/portfolioSlice';
-import { coinGeckoApi } from '../services/coinGeckoApi';
+import { addTokensToWatchlist } from '../../store/portfolioSlice';
+import type { Token } from '../../store/portfolioSlice';
+import { coinGeckoApi } from '../../services/coinGeckoApi';
 
 interface AddTokenModalProps {
   isOpen: boolean;
