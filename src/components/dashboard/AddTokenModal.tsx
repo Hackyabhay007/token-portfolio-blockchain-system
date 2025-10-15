@@ -409,7 +409,7 @@ const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: T
         paddingRight: '8px',
         paddingBottom: '8px',
         paddingLeft: '8px',
-        gap: '12px',
+        gap: '8px',
         height: '44px',
         ...(animate && { animationDelay: `${index * 0.03}s` })
       }}
@@ -422,7 +422,7 @@ const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: T
         e.currentTarget.style.backgroundColor = isSelected ? '#A9E8510F' : 'transparent';
       }}
     >
-      <TokenImage src={token.image} alt={token.name} symbol={token.symbol} size={32} />
+      <TokenImage src={token.image} alt={token.name} symbol={token.symbol} variant="modal" />
       <div className="flex-1 text-left" style={{ 
         fontWeight: 400, 
         fontSize: '14px', 

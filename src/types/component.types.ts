@@ -5,6 +5,7 @@ export interface TokenImageProps {
   alt: string;
   symbol: string;
   size?: number;
+  variant?: 'modal' | 'table';
 }
 
 export interface TokenRowProps {

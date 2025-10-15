@@ -155,8 +155,8 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                     >
                       {/* Token */}
                       <td style={{ paddingLeft: '24px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
-                        <div className="flex items-center gap-3">
-                          <TokenImage src={token.image} alt={token.name} symbol={token.symbol} size={32} />
+                        <div className="flex items-center" style={{ gap: '8px' }}>
+                          <TokenImage src={token.image} alt={token.name} symbol={token.symbol} variant="table" />
                           <div style={{ fontSize: '14px', fontWeight: 400 }}>
                             {token.name} <span style={{ color: 'var(--text-secondary)' }}>({token.symbol.toUpperCase()})</span>
                           </div>
