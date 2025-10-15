@@ -92,7 +92,18 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
       {watchlist.length === 0 ? (
         <div className="px-6 py-16 text-center">
           <button
-            onClick={onAddToken}
+            onClick={() => {
+              try {
+                console.log('Add token button clicked');
+                if (onAddToken) {
+                  onAddToken();
+                } else {
+                  console.error('onAddToken is not defined');
+                }
+              } catch (error) {
+                console.error('Error clicking add token button:', error);
+              }
+            }}
             className="transition-all"
             style={{ 
               width: '80px', 

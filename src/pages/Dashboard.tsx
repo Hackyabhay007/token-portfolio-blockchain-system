@@ -27,14 +27,25 @@ export const Dashboard = () => {
 
   const handleRefreshPrices = async () => {
     if (watchlist.length === 0) return;
+    if (isRefreshing) return; // Prevent multiple simultaneous refreshes
 
     setIsRefreshing(true);
     setRefreshError(null);
+    
+    // Set a timeout to force reset if request hangs
+    const timeoutId = setTimeout(() => {
+      setIsRefreshing(false);
+      setRefreshError('Request timed out. Please try again.');
+      setTimeout(() => setRefreshError(null), 5000);
+    }, 15000); // 15 second timeout
+
     try {
       const tokenIds = watchlist.map((token: WatchlistToken) => token.id);
       const updatedTokens = await coinGeckoApi.getTokensByIds(tokenIds);
+      clearTimeout(timeoutId); // Clear timeout on success
       dispatch(updatePrices(updatedTokens));
     } catch (error) {
+      clearTimeout(timeoutId); // Clear timeout on error
       console.error('Error refreshing prices:', error);
       setRefreshError('Failed to refresh prices. Please try again.');
       // Auto-clear error after 5 seconds

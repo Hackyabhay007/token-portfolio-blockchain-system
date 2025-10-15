@@ -73,7 +73,7 @@ export const PortfolioTotal = () => {
           <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
           <div className="flex flex-col items-center" style={{ gap: '32px' }}>
             {/* Chart */}
-            <div className="w-48 h-48 flex-shrink-0 relative" style={{ pointerEvents: 'none', userSelect: 'none' }}>
+            <div className="w-64 h-64 flex-shrink-0 relative" style={{ pointerEvents: 'none', userSelect: 'none' }}>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -82,8 +82,8 @@ export const PortfolioTotal = () => {
                       data={chartData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={30}
-                      outerRadius={78}
+                      innerRadius={45}
+                      outerRadius={110}
                       paddingAngle={0}
                       dataKey="value"
                       strokeWidth={1}
@@ -96,12 +96,12 @@ export const PortfolioTotal = () => {
                 </ResponsiveContainer>
               ) : (
                 <div className="w-full h-full flex items-center justify-center relative">
-                  <svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="96" cy="96" r="78" stroke="var(--neutral-600)" strokeWidth="8" opacity="0.6"/>
+                  <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="128" cy="128" r="110" stroke="var(--neutral-600)" strokeWidth="10" opacity="0.6"/>
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
                     <div style={{ 
-                      fontSize: '16px',
+                      fontSize: '18px',
                       lineHeight: '24px',
                       fontWeight: 500,
                       color: 'var(--text-bright)',
@@ -186,43 +186,45 @@ export const PortfolioTotal = () => {
           <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
           <div className="flex items-start gap-8">
             {/* Chart */}
-            <div className="w-36 h-36 flex-shrink-0 relative" style={{ pointerEvents: 'none', userSelect: 'none' }}>
-              {chartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={chartData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={28}
-                      outerRadius={70}
-                      paddingAngle={0}
-                      dataKey="value"
-                      strokeWidth={1}
-                    >
-                      {chartData.map((entry: { color: string }, index: number) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="w-full h-full flex items-center justify-center relative">
-                  <svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="72" cy="72" r="58" stroke="var(--neutral-600)" strokeWidth="8" opacity="0.6"/>
-                  </svg>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
-                    <div style={{ 
-                      fontSize: '14px',
-                      lineHeight: '20px',
-                      fontWeight: 500,
-                      color: 'var(--text-bright)'
-                    }}>
-                      No holdings yet
+            <div className="w-48 h-48 flex-shrink-0 relative" style={{ pointerEvents: 'none', userSelect: 'none' }}>
+              <div className="w-full h-full">
+                {chartData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={chartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={35}
+                        outerRadius={85}
+                        paddingAngle={0}
+                        dataKey="value"
+                        strokeWidth={1}
+                      >
+                        {chartData.map((entry: { color: string }, index: number) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center relative">
+                    <svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="96" cy="96" r="85" stroke="var(--neutral-600)" strokeWidth="10" opacity="0.6"/>
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
+                      <div style={{ 
+                        fontSize: '16px',
+                        lineHeight: '20px',
+                        fontWeight: 500,
+                        color: 'var(--text-bright)'
+                      }}>
+                        No holdings yet
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
             {/* Legend */}
