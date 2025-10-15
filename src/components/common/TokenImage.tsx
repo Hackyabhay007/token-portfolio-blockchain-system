@@ -44,7 +44,7 @@ export const TokenImage = ({ src, alt, symbol, size, variant = 'modal' }: TokenI
             borderRadius: innerBorderRadius,
             background: 'linear-gradient(90deg, rgba(169, 232, 81, 0.05) 0%, rgba(169, 232, 81, 0.15) 50%, rgba(169, 232, 81, 0.05) 100%)',
             backgroundSize: '200% 100%',
-            animation: 'shimmer 1.5s ease-in-out infinite'
+            animation: 'shimmer 2.5s ease-in-out infinite'
           }}
         />
       )}
