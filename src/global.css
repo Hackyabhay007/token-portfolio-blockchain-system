@@ -68,6 +68,12 @@
   --shadow-button: rgba(31, 102, 25, 0.4);
   --shadow-inset-light: rgba(255, 255, 255, 0.2);
   --bg-fallback: #D9D9D9;
+  --accent-bg-light: rgba(169, 232, 81, 0.1);
+  --accent-bg-hover: rgba(169, 232, 81, 0.2);
+  --hover-overlay: rgba(161, 161, 170, 0.05);
+  --hover-overlay-strong: rgba(161, 161, 170, 0.1);
+  --white-overlay: rgba(255, 255, 255, 0.08);
+  --border-subtle: rgba(161, 161, 170, 0.2);
 }
 
 

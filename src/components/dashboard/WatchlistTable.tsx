@@ -87,7 +87,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
   };
 
   return (
-    <div className="overflow-hidden animate-fade-in" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(161, 161, 170, 0.2)' }}>
+    <div className="overflow-hidden animate-fade-in" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'var(--border-subtle)' }}>
       {/* Table */}
       {watchlist.length === 0 ? (
         <div className="px-6 py-16 text-center">
@@ -98,7 +98,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
               width: '80px', 
               height: '80px', 
               borderRadius: '50%', 
-              backgroundColor: 'rgba(169, 232, 81, 0.1)',
+              backgroundColor: 'var(--accent-bg-light)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -107,11 +107,11 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
               cursor: 'pointer'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(169, 232, 81, 0.2)';
+              e.currentTarget.style.backgroundColor = 'var(--accent-bg-hover)';
               e.currentTarget.style.transform = 'scale(1.05)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(169, 232, 81, 0.1)';
+              e.currentTarget.style.backgroundColor = 'var(--accent-bg-light)';
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
@@ -139,7 +139,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
           <div className="overflow-x-auto lg:overflow-x-visible">
             <table className="w-full" style={{ minWidth: '800px' }}>
               <thead style={{ backgroundColor: 'var(--bg-component)' }}>
-                <tr className="text-left" style={{ color: 'var(--text-secondary)', borderBottom: '1px solid rgba(161, 161, 170, 0.2)' }}>
+                <tr className="text-left" style={{ color: 'var(--text-secondary)', borderBottom: '1px solid var(--border-subtle)' }}>
                   <th style={{ paddingLeft: '24px', paddingRight: '12px', paddingTop: '16px', paddingBottom: '16px', fontSize: '14px', fontWeight: 500 }}>Token</th>
                   <th style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '16px', paddingBottom: '16px', fontSize: '14px', fontWeight: 500 }}>Price</th>
                   <th style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '16px', paddingBottom: '16px', fontSize: '14px', fontWeight: 500 }}>24h %</th>
@@ -165,7 +165,9 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                         paddingLeft: '24px',
                         paddingRight: '24px',
                         transform: editingId === token.id ? 'scale(1.01)' : 'scale(1)',
-                        transition: 'all 0.2s ease'
+                        transition: 'all 0.2s ease',
+                        position: 'relative',
+                        zIndex: openMenuId === token.id ? 30 : 1
                       }}
                       onClick={() => {
                         // Close menu when clicking on any row
@@ -173,7 +175,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                           setOpenMenuId(null);
                         }
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.05)'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--hover-overlay)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
                     >
                       {/* Token */}
@@ -395,7 +397,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                               borderRadius: '6px',
                               backgroundColor: 'transparent'
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.1)'}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--hover-overlay-strong)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                           >
                             <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '18px', height: '18px' }} />
@@ -416,8 +418,9 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                   padding: '4px',
                                   boxShadow: '0px 0px 0px 1px var(--shadow-darker), 0px 4px 8px 0px var(--shadow-darker), 0px 8px 16px 0px var(--shadow-darker)',
                                   top: '50%',
-                                  right: '28px',
-                                  transform: 'translateY(-50%)'
+                                  right: '100%',
+                                  transform: 'translateY(-50%)',
+                                  marginRight: '8px'
                                 }}
                               >
                                 <button
@@ -431,7 +434,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                     padding: '8px',
                                     borderRadius: '4px'
                                   }}
-                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.1)'}
+                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--hover-overlay-strong)'}
                                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                 >
                                   <img src="/icons/edit.svg" alt="Edit" style={{ width: '15px', height: '16px' }} />
@@ -439,10 +442,28 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                 </button>
                                 <div style={{ 
                                   width: '152px', 
-                                  height: '1px', 
-                                  backgroundColor: 'var(--bg-divider)',
-                                  marginLeft: '-8px'
-                                }}></div>
+                                  height: '8px',
+                                  marginLeft: '-8px',
+                                  position: 'relative',
+                                  background: 'var(--bg-secondary)'
+                                }}>
+                                  <div style={{
+                                    position: 'absolute',
+                                    top: '3px',
+                                    left: '0',
+                                    right: '0',
+                                    height: '1px',
+                                    background: 'var(--bg-divider)'
+                                  }}></div>
+                                  <div style={{
+                                    position: 'absolute',
+                                    top: '4px',
+                                    left: '0',
+                                    right: '0',
+                                    height: '1px',
+                                    background: 'var(--white-overlay)'
+                                  }}></div>
+                                </div>
                                 <button
                                   onClick={() => handleRemoveToken(token.id)}
                                   className="w-full text-left text-sm transition-colors flex items-center gap-2"
@@ -452,7 +473,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                     padding: '8px',
                                     borderRadius: '4px'
                                   }}
-                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.1)'}
+                                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--hover-overlay-strong)'}
                                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                                 >
                                   <img src="/icons/delete.svg" alt="Delete" style={{ width: '15px', height: '16px' }} />
@@ -471,7 +492,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
           </div>
 
           {/* Pagination */}
-          <div className="px-6 py-4 flex items-center justify-between" style={{ backgroundColor: 'var(--bg-primary)', borderTop: '1px solid rgba(161, 161, 170, 0.2)' }}>
+          <div className="px-6 py-4 flex items-center justify-between" style={{ backgroundColor: 'var(--bg-primary)', borderTop: '1px solid var(--border-subtle)' }}>
             <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>
               {startIndex + 1} — {Math.min(endIndex, watchlist.length)} of{' '}
               {watchlist.length} results
