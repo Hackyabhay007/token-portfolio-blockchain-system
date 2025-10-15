@@ -30,7 +30,7 @@ export const RefreshButton = ({ onClick, isRefreshing, disabled }: RefreshButton
         }}
       >
         <img 
-          src="/assets/refresh.svg" 
+          src="/icons/refresh.svg" 
           alt="Refresh" 
           style={{ 
             width: '20px', 
@@ -47,7 +47,7 @@ export const RefreshButton = ({ onClick, isRefreshing, disabled }: RefreshButton
         disabled={disabled}
         isLoading={isRefreshing}
         icon={
-          <img src="/assets/refresh.svg" alt="Refresh" style={{ width: '15px', height: '15px' }} />
+          <img src="/icons/refresh.svg" alt="Refresh" style={{ width: '15px', height: '15px' }} />
         }
         className="hidden lg:flex"
       >

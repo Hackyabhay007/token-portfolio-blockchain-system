@@ -150,44 +150,71 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}>
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4" 
+      style={{ backgroundColor: '#212124D9' }}
+      onClick={handleClose}
+    >
       <div 
-        className="flex flex-col w-full modal-container"
+        className="flex flex-col modal-container w-full sm:w-[640px]"
         style={{
-          backgroundColor: 'var(--bg-primary)',
+          backgroundColor: '#212124',
           borderRadius: '12px',
-          border: '1px solid rgba(161, 161, 170, 0.2)',
-          boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.8)',
-          maxWidth: '960px',
-          maxHeight: '80vh'
+          boxShadow: '0px 0px 0px 1px #18181B inset, 0px 0px 0px 1.5px #FFFFFF0F inset, 0px -1px 0px 0px #FFFFFF0A, 0px 0px 0px 1px #FFFFFF1A, 0px 4px 8px 0px #00000052, 0px 8px 16px 0px #00000052',
+          maxWidth: '640px',
+          height: '480px',
+          maxHeight: '90vh',
+          justifyContent: 'space-between'
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Search */}
-        <div style={{ paddingTop: '12px', paddingRight: '16px', paddingBottom: '12px', paddingLeft: '16px' }}>
+        <div style={{ 
+          width: '100%',
+          height: '52px',
+          gap: '12px',
+          paddingTop: '12px', 
+          paddingRight: '16px', 
+          paddingBottom: '12px', 
+          paddingLeft: '16px'
+        }}>
           <div className="relative">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tokens (e.g., ETH, SOL)..."
-              className="w-full px-4 py-3 text-white focus:outline-none transition-colors"
+              className="w-full focus:outline-none transition-colors"
               style={{
+                height: '28px',
+                gap: '8px',
                 backgroundColor: 'transparent',
                 border: 'none',
-                borderBottom: '1px solid rgba(161, 161, 170, 0.2)',
                 borderRadius: '0',
                 fontSize: '16px',
-                color: 'var(--text-secondary)'
+                color: 'var(--text-secondary)',
+                padding: 0
               }}
             />
           </div>
         </div>
+        
+        {/* Divider */}
+        <div style={{ 
+          width: '100%', 
+          height: '1px', 
+          backgroundColor: '#FFFFFF1A'
+        }}></div>
 
         {/* Content */}
         <div
           ref={scrollContainerRef}
           onScroll={handleScroll}
           className="flex-1 overflow-y-auto px-6 py-4"
+          style={{
+            scrollbarWidth: 'thin',
+            scrollbarColor: '#FFFFFF1A transparent'
+          }}
         >
           {/* Trending Section */}
           {!searchQuery && trendingTokens.length > 0 && (
@@ -238,14 +265,16 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
 
         {/* Footer */}
         <div className="flex items-center justify-between" style={{ 
-          borderTop: '1px solid rgba(161, 161, 170, 0.2)',
-          backgroundColor: 'var(--neutral-800)',
+          borderTop: '1px solid #FFFFFF1A',
+          backgroundColor: '#27272A',
           paddingTop: '12px',
           paddingRight: '16px',
           paddingBottom: '12px',
           paddingLeft: '16px',
-          height: '52px',
-          gap: '12px'
+          height: '56px',
+          gap: '12px',
+          borderBottomLeftRadius: '12px',
+          borderBottomRightRadius: '12px'
         }}>
           <div className="text-sm text-gray-500">
             {selectedTokens.size > 0 ? (
@@ -259,14 +288,23 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           <button
             onClick={handleAddToWatchlist}
             disabled={selectedTokens.size === 0}
-            className="text-black font-semibold transition-colors disabled:cursor-not-allowed"
+            className="font-medium transition-colors disabled:cursor-not-allowed"
             style={{
               backgroundColor: selectedTokens.size === 0 ? 'var(--bg-tertiary)' : '#A9E851',
               color: selectedTokens.size === 0 ? 'var(--text-secondary)' : '#000000',
-              borderRadius: '12px',
-              padding: '10px 24px',
-              fontSize: '14px',
-              height: '36px'
+              borderRadius: '6px',
+              paddingTop: '6px',
+              paddingBottom: '6px',
+              paddingLeft: '10px',
+              paddingRight: '10px',
+              fontSize: '13px',
+              height: '32px',
+              width: '114px',
+              gap: '6px',
+              fontWeight: 500,
+              lineHeight: '20px',
+              letterSpacing: '0%',
+              boxShadow: selectedTokens.size === 0 ? 'none' : '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619'
             }}
             onMouseEnter={(e) => {
               if (selectedTokens.size > 0) {
@@ -297,8 +335,9 @@ const TokenRow = ({ token, isSelected, onToggle }: TokenRowProps) => {
   return (
     <button
       onClick={onToggle}
-      className="w-full flex items-center transition-colors"
+      className="flex items-center transition-colors w-full"
       style={{
+        maxWidth: '624px',
         borderRadius: '6px',
         backgroundColor: isSelected ? '#A9E8510F' : 'transparent',
         paddingTop: '8px',
@@ -318,27 +357,31 @@ const TokenRow = ({ token, isSelected, onToggle }: TokenRowProps) => {
       }}
     >
       <img src={token.image} alt={token.name} className="w-8 h-8 rounded-full" />
-      <div className="flex-1 text-left">
-        <div className="font-medium">{token.name}</div>
+      <div className="flex-1 text-left" style={{ 
+        fontWeight: 400, 
+        fontSize: '14px', 
+        lineHeight: '20px', 
+        letterSpacing: '0%' 
+      }}>
+        <div style={{ fontWeight: 400 }}>{token.name}</div>
         <div className="text-sm text-gray-400">{token.symbol.toUpperCase()}</div>
       </div>
       {isSelected ? (
-        <div className="flex items-center gap-1.5">
-          <svg className="w-4 h-4 text-[#a3e635]" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          </svg>
-          <div className="w-5 h-5 rounded-full border-2 border-[#a3e635] bg-[#a3e635] flex items-center justify-center">
-            <svg className="w-3 h-3 text-black" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
+        <div className="flex items-center" style={{ gap: '6px' }}>
+          <img src="/icons/star.svg" alt="Star" style={{ width: '15px', height: '15px', flexShrink: 0 }} />
+          <div className="rounded-full flex items-center justify-center" style={{ 
+            width: '15px', 
+            height: '15px',
+            minWidth: '15px',
+            minHeight: '15px',
+            backgroundColor: '#A9E851',
+            flexShrink: 0
+          }}>
+            <img src="/icons/check.svg" alt="Check" style={{ width: '9px', height: '9px' }} />
           </div>
         </div>
       ) : (
-        <div className="w-5 h-5 rounded-full border-2 border-gray-600"></div>
+        <img src="/icons/circle.svg" alt="Circle" style={{ width: '15px', height: '15px', minWidth: '15px', minHeight: '15px', flexShrink: 0 }} />
       )}
     </button>
   );
