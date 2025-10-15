@@ -19,7 +19,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [removingId, setRemovingId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const itemsPerPage = 8;
+  const itemsPerPage = 10;
 
   const totalPages = Math.max(1, Math.ceil(watchlist.length / itemsPerPage));
   const startIndex = (currentPage - 1) * itemsPerPage;
