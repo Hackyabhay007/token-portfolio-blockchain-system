@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 import { addTokensToWatchlist } from '../../store/portfolioSlice';
 import type { Token } from '../../store/portfolioSlice';
 import { coinGeckoApi } from '../../services/coinGeckoApi';
@@ -11,12 +12,15 @@ interface AddTokenModalProps {
 
 export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const dispatch = useDispatch();
+  const { watchlist } = useSelector((state: RootState) => state.portfolio);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<Token[]>([]);
   const [trendingTokens, setTrendingTokens] = useState<Token[]>([]);
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set());
   const [isSearching, setIsSearching] = useState(false);
   const [isLoadingTrending, setIsLoadingTrending] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -27,13 +31,18 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
     if (isOpen) {
       loadTrendingTokens();
     }
-  }, [isOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, watchlist.length]);
 
   const loadTrendingTokens = async () => {
     setIsLoadingTrending(true);
     try {
       const tokens = await coinGeckoApi.getTrendingTokens();
-      setTrendingTokens(tokens);
+      // Filter out already added tokens
+      const filteredTokens = tokens.filter(
+        (token) => !watchlist.some((w) => w.id === token.id)
+      );
+      setTrendingTokens(filteredTokens);
     } catch (error) {
       console.error('Error loading trending tokens:', error);
     } finally {
@@ -53,7 +62,11 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         setPage(1);
         try {
           const tokens = await coinGeckoApi.searchTokens(searchQuery);
-          setSearchResults(tokens);
+          // Filter out already added tokens
+          const filteredTokens = tokens.filter(
+            (token) => !watchlist.some((w) => w.id === token.id)
+          );
+          setSearchResults(filteredTokens);
           setHasMore(tokens.length >= 20);
         } catch (error) {
           console.error('Error searching tokens:', error);
@@ -85,8 +98,12 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       try {
         const nextPage = page + 1;
         const newTokens = await coinGeckoApi.getTopTokens(nextPage, 50);
-        if (newTokens.length > 0) {
-          setSearchResults((prev) => [...prev, ...newTokens]);
+        // Filter out already added tokens
+        const filteredTokens = newTokens.filter(
+          (token) => !watchlist.some((w) => w.id === token.id)
+        );
+        if (filteredTokens.length > 0) {
+          setSearchResults((prev) => [...prev, ...filteredTokens]);
           setPage(nextPage);
           setHasMore(newTokens.length >= 50);
         } else {
@@ -105,13 +122,18 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
     if (isOpen && !searchQuery && searchResults.length === 0) {
       loadInitialTokens();
     }
-  }, [isOpen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, watchlist.length]);
 
   const loadInitialTokens = async () => {
     setIsSearching(true);
     try {
       const tokens = await coinGeckoApi.getTopTokens(1, 50);
-      setSearchResults(tokens);
+      // Filter out already added tokens
+      const filteredTokens = tokens.filter(
+        (token) => !watchlist.some((w) => w.id === token.id)
+      );
+      setSearchResults(filteredTokens);
       setHasMore(tokens.length >= 50);
     } catch (error) {
       console.error('Error loading initial tokens:', error);
@@ -130,40 +152,48 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
     setSelectedTokens(newSelected);
   };
 
-  const handleAddToWatchlist = () => {
+  const handleAddToWatchlist = async () => {
+    setIsAdding(true);
     const tokensToAdd = [...searchResults, ...trendingTokens].filter((token) =>
       selectedTokens.has(token.id)
     );
+    
+    // Simulate a small delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     dispatch(addTokensToWatchlist(tokensToAdd));
     setSelectedTokens(new Set());
     setSearchQuery('');
-    onClose();
+    setIsAdding(false);
+    handleClose();
   };
 
   const handleClose = () => {
-    setSelectedTokens(new Set());
-    setSearchQuery('');
-    setSearchResults([]);
-    onClose();
+    setIsClosing(true);
+    // Wait for animation to complete before closing
+    setTimeout(() => {
+      setSelectedTokens(new Set());
+      setSearchQuery('');
+      setSearchResults([]);
+      setIsClosing(false);
+      onClose();
+    }, 200);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4" 
-      style={{ backgroundColor: '#212124D9' }}
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`} style={{ backgroundColor: '#212124D9' }}
       onClick={handleClose}
     >
       <div 
-        className="flex flex-col modal-container w-full sm:w-[640px]"
+        className={`flex flex-col modal-container w-full sm:w-[640px] ${isClosing ? 'animate-scale-out' : 'animate-scale-in'}`}
         style={{
           backgroundColor: '#212124',
           borderRadius: '12px',
           boxShadow: '0px 0px 0px 1px #18181B inset, 0px 0px 0px 1.5px #FFFFFF0F inset, 0px -1px 0px 0px #FFFFFF0A, 0px 0px 0px 1px #FFFFFF1A, 0px 4px 8px 0px #00000052, 0px 8px 16px 0px #00000052',
           maxWidth: '640px',
           height: '480px',
-          maxHeight: '90vh',
           justifyContent: 'space-between'
         }}
         onClick={(e) => e.stopPropagation()}
@@ -264,7 +294,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between" style={{ 
+        <div className="flex items-center justify-end" style={{ 
           borderTop: '1px solid #FFFFFF1A',
           backgroundColor: '#27272A',
           paddingTop: '12px',
@@ -276,22 +306,13 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           borderBottomLeftRadius: '12px',
           borderBottomRightRadius: '12px'
         }}>
-          <div className="text-sm text-gray-500">
-            {selectedTokens.size > 0 ? (
-              <>
-                {selectedTokens.size} token{selectedTokens.size !== 1 ? 's' : ''} selected
-              </>
-            ) : (
-              'Select tokens to add'
-            )}
-          </div>
           <button
             onClick={handleAddToWatchlist}
-            disabled={selectedTokens.size === 0}
-            className="font-medium transition-colors disabled:cursor-not-allowed"
+            disabled={selectedTokens.size === 0 || isAdding}
+            className="font-medium transition-colors disabled:cursor-not-allowed flex items-center justify-center"
             style={{
-              backgroundColor: selectedTokens.size === 0 ? 'var(--bg-tertiary)' : '#A9E851',
-              color: selectedTokens.size === 0 ? 'var(--text-secondary)' : '#000000',
+              backgroundColor: selectedTokens.size === 0 || isAdding ? '#27272A' : '#A9E851',
+              color: selectedTokens.size === 0 || isAdding ? 'var(--text-secondary)' : '#000000',
               borderRadius: '6px',
               paddingTop: '6px',
               paddingBottom: '6px',
@@ -304,20 +325,26 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
               fontWeight: 500,
               lineHeight: '20px',
               letterSpacing: '0%',
-              boxShadow: selectedTokens.size === 0 ? 'none' : '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619'
+              border: selectedTokens.size === 0 || isAdding ? '1px solid #FFFFFF1A' : 'none',
+              boxShadow: selectedTokens.size === 0 || isAdding ? 'none' : '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
+              opacity: isAdding ? 0.7 : 1
             }}
             onMouseEnter={(e) => {
-              if (selectedTokens.size > 0) {
+              if (selectedTokens.size > 0 && !isAdding) {
                 e.currentTarget.style.backgroundColor = '#bef264';
               }
             }}
             onMouseLeave={(e) => {
-              if (selectedTokens.size > 0) {
+              if (selectedTokens.size > 0 && !isAdding) {
                 e.currentTarget.style.backgroundColor = '#A9E851';
               }
             }}
           >
-            Add to Wishlist
+            {isAdding ? (
+              <div className="animate-spin" style={{ width: '14px', height: '14px', border: '2px solid var(--text-secondary)', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
+            ) : (
+              'Add to Wishlist'
+            )}
           </button>
         </div>
       </div>
