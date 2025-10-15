@@ -18,10 +18,22 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const [isClosing, setIsClosing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+  const [loadedTokenIds, setLoadedTokenIds] = useState<Set<string>>(new Set());
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   // Load trending tokens on mount
   useEffect(() => {
@@ -63,6 +75,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
             (token: Token) => !watchlist.some((w: { id: string }) => w.id === token.id)
           );
           setSearchResults(filteredTokens);
+          setLoadedTokenIds(new Set(filteredTokens.map(t => t.id)));
           setHasMore(tokens.length >= 20);
         } catch (error) {
           console.error('Error searching tokens:', error);
@@ -101,7 +114,13 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           (token: Token) => !watchlist.some((w: { id: string }) => w.id === token.id)
         );
         if (filteredTokens.length > 0) {
+          // Add small delay for smoother transition
+          await new Promise(resolve => setTimeout(resolve, 150));
           setSearchResults((prev) => [...prev, ...filteredTokens]);
+          // Mark new tokens as not loaded yet so they animate
+          setTimeout(() => {
+            setLoadedTokenIds((prev) => new Set([...prev, ...filteredTokens.map(t => t.id)]));
+          }, 50);
           setPage(nextPage);
           setHasMore(newTokens.length >= 50);
         } else {
@@ -127,7 +146,6 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const loadInitialTokens = async () => {
     setIsSearching(true);
     setError(null);
-    setInitialLoadComplete(false);
     try {
       const tokens = await coinGeckoApi.getTopTokens(1, 50);
       // Filter out already added tokens
@@ -136,7 +154,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       );
       setSearchResults(filteredTokens);
       setHasMore(tokens.length >= 50);
-      setInitialLoadComplete(true);
+      setLoadedTokenIds(new Set(filteredTokens.map(t => t.id)));
     } catch (error) {
       console.error('Error loading initial tokens:', error);
       setError('Failed to load tokens. Please check your connection.');
@@ -178,6 +196,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       setSelectedTokens(new Set());
       setSearchQuery('');
       setSearchResults([]);
+      setLoadedTokenIds(new Set());
       setIsClosing(false);
       onClose();
     }, 200);
@@ -243,10 +262,14 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         <div
           ref={scrollContainerRef}
           onScroll={handleScroll}
+          onWheel={(e) => e.stopPropagation()}
+          onTouchMove={(e) => e.stopPropagation()}
           className="flex-1 overflow-y-auto px-6 py-4"
           style={{
             scrollbarWidth: 'thin',
-            scrollbarColor: '#FFFFFF1A transparent'
+            scrollbarColor: '#FFFFFF1A transparent',
+            minHeight: '320px',
+            scrollBehavior: 'smooth'
           }}
         >
           {/* Trending Section */}
@@ -261,7 +284,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                     isSelected={selectedTokens.has(token.id)}
                     onToggle={() => toggleTokenSelection(token.id)}
                     index={index}
-                    animate={true}
+                    animate={!loadedTokenIds.has(token.id)}
                   />
                 ))}
               </div>
@@ -303,11 +326,6 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                 <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>No tokens found</div>
                 <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>Try a different search term</div>
               </div>
-            ) : searchResults.length === 0 && !searchQuery ? (
-              <div className="py-12 text-center">
-                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>All tokens have been added</div>
-                <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>Search for more tokens</div>
-              </div>
             ) : (
               <div className="space-y-1">
                 {searchResults.map((token, index) => (
@@ -317,11 +335,11 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                     isSelected={selectedTokens.has(token.id)}
                     onToggle={() => toggleTokenSelection(token.id)}
                     index={index}
-                    animate={!initialLoadComplete || index < 50}
+                    animate={!loadedTokenIds.has(token.id)}
                   />
                 ))}
                 {isSearching && searchResults.length > 0 && (
-                  <div className="py-4 flex items-center justify-center gap-2" style={{ color: 'var(--text-secondary)' }}>
+                  <div className="py-4 flex items-center justify-center gap-2 animate-fade-in" style={{ color: 'var(--text-secondary)' }}>
                     <div className="animate-spin" style={{ 
                       width: '14px', 
                       height: '14px', 
@@ -411,7 +429,7 @@ const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: T
         paddingLeft: '8px',
         gap: '8px',
         height: '44px',
-        ...(animate && { animationDelay: `${index * 0.03}s` })
+        ...(animate && { animationDelay: `${Math.min(index * 0.02, 0.5)}s` })
       }}
       onMouseEnter={(e) => {
         if (!isSelected) {
