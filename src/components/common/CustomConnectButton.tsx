@@ -48,19 +48,25 @@ export const CustomConnectButton = () => {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="flex items-center font-medium text-black transition-all hover:opacity-90"
+                    className="flex items-center font-medium transition-all hover:opacity-90"
                     style={{ 
                       backgroundColor: '#A9E851',
-                      width: '136px',
+                      color: '#000000',
+                      minWidth: '136px',
                       height: '32px',
                       borderRadius: '100px',
                       gap: '6px',
                       paddingTop: '6px',
-                      paddingRight: '10px',
+                      paddingRight: '16px',
                       paddingBottom: '6px',
-                      paddingLeft: '10px',
-                      boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
-                      justifyContent: 'center'
+                      paddingLeft: '16px',
+                      boxShadow: '0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(31, 102, 25, 0.4), 0px 0px 0px 1px #1F6619',
+                      justifyContent: 'center',
+                      border: 'none',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      fontSize: '14px',
+                      lineHeight: '20px'
                     }}
                   >
                     <WalletIcon />

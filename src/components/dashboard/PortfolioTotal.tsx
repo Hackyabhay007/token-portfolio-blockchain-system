@@ -73,7 +73,7 @@ export const PortfolioTotal = () => {
           <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
           <div className="flex flex-col items-center" style={{ gap: '32px' }}>
             {/* Chart */}
-            <div className="w-48 h-48 flex-shrink-0" style={{ pointerEvents: 'none', userSelect: 'none' }}>
+            <div className="w-48 h-48 flex-shrink-0 relative" style={{ pointerEvents: 'none', userSelect: 'none' }}>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -95,8 +95,21 @@ export const PortfolioTotal = () => {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-32 h-32 rounded-full border-8" style={{ borderColor: 'var(--border-primary)' }}></div>
+                <div className="w-full h-full flex items-center justify-center relative">
+                  <svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="96" cy="96" r="78" stroke="#52525B" strokeWidth="8" opacity="0.6"/>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
+                    <div style={{ 
+                      fontSize: '16px',
+                      lineHeight: '24px',
+                      fontWeight: 500,
+                      color: '#F4F4F5',
+                      marginBottom: '4px'
+                    }}>
+                      No holdings yet
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -131,9 +144,6 @@ export const PortfolioTotal = () => {
                   </div>
                 </div>
               ))}
-              {chartData.length === 0 && (
-                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>No holdings yet</div>
-              )}
             </div>
           </div>
         </div>
@@ -176,7 +186,7 @@ export const PortfolioTotal = () => {
           <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
           <div className="flex items-start gap-8">
             {/* Chart */}
-            <div className="w-36 h-36 flex-shrink-0" style={{ pointerEvents: 'none', userSelect: 'none' }}>
+            <div className="w-36 h-36 flex-shrink-0 relative" style={{ pointerEvents: 'none', userSelect: 'none' }}>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -197,8 +207,20 @@ export const PortfolioTotal = () => {
                   </PieChart>
                 </ResponsiveContainer>
               ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="w-32 h-32 rounded-full border-8" style={{ borderColor: 'var(--border-primary)' }}></div>
+                <div className="w-full h-full flex items-center justify-center relative">
+                  <svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="72" cy="72" r="58" stroke="#52525B" strokeWidth="8" opacity="0.6"/>
+                  </svg>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
+                    <div style={{ 
+                      fontSize: '14px',
+                      lineHeight: '20px',
+                      fontWeight: 500,
+                      color: '#F4F4F5'
+                    }}>
+                      No holdings yet
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
@@ -233,9 +255,6 @@ export const PortfolioTotal = () => {
                   </div>
                 </div>
               ))}
-              {chartData.length === 0 && (
-                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>No holdings yet</div>
-              )}
             </div>
           </div>
         </div>

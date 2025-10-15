@@ -69,7 +69,7 @@ export const Dashboard = () => {
         hasTokens={watchlist.length > 0}
       />
 
-      <WatchlistTable />
+      <WatchlistTable onAddToken={() => setIsModalOpen(true)} />
 
       <AddTokenModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>

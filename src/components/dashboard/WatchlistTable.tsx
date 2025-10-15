@@ -6,7 +6,11 @@ import { Sparkline } from './Sparkline';
 import { TokenImage } from '../common/TokenImage';
 import type { WatchlistToken } from '../../types';
 
-export const WatchlistTable = () => {
+interface WatchlistTableProps {
+  onAddToken?: () => void;
+}
+
+export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
   const dispatch = useDispatch();
   const { watchlist } = useSelector((state: RootState) => state.portfolio);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -70,23 +74,37 @@ export const WatchlistTable = () => {
       {/* Table */}
       {watchlist.length === 0 ? (
         <div className="px-6 py-16 text-center">
-          <div style={{ 
-            width: '48px', 
-            height: '48px', 
-            borderRadius: '50%', 
-            backgroundColor: 'rgba(169, 232, 81, 0.1)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 16px'
-          }}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 5V19M5 12H19" stroke="#A9E851" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <button
+            onClick={onAddToken}
+            className="transition-all"
+            style={{ 
+              width: '80px', 
+              height: '80px', 
+              borderRadius: '50%', 
+              backgroundColor: 'rgba(169, 232, 81, 0.1)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px',
+              border: 'none',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(169, 232, 81, 0.2)';
+              e.currentTarget.style.transform = 'scale(1.05)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(169, 232, 81, 0.1)';
+              e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 8V24M8 16H24" stroke="#A9E851" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </div>
+          </button>
           <div style={{ 
             color: 'var(--text-primary)', 
-            fontSize: '16px', 
+            fontSize: '18px', 
             fontWeight: 500,
             marginBottom: '8px'
           }}>
