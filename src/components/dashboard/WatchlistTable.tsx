@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { updateHoldings, removeTokenFromWatchlist } from '../../store/portfolioSlice';
@@ -25,6 +25,23 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentTokens = watchlist.slice(startIndex, endIndex);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (openMenuId !== null) {
+        setOpenMenuId(null);
+      }
+    };
+
+    if (openMenuId !== null) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [openMenuId]);
   
   // Reset to page 1 if current page exceeds total pages
   if (currentPage > totalPages && totalPages > 0) {
@@ -150,6 +167,12 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                         transform: editingId === token.id ? 'scale(1.01)' : 'scale(1)',
                         transition: 'all 0.2s ease'
                       }}
+                      onClick={() => {
+                        // Close menu when clicking on any row
+                        if (openMenuId !== null) {
+                          setOpenMenuId(null);
+                        }
+                      }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.05)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
                     >
@@ -199,7 +222,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
 
                       {/* Sparkline */}
                       <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
-                        <div className="w-32 h-10">
+                        <div className="w-32 h-10" style={{ outline: 'none' }}>
                           {token.sparkline_in_7d?.price ? (
                             <Sparkline
                               data={token.sparkline_in_7d.price}
@@ -361,9 +384,10 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                       <td style={{ paddingLeft: '12px', paddingRight: '24px', paddingTop: '12px', paddingBottom: '12px' }}>
                         <div className="relative">
                           <button
-                            onClick={() =>
-                              setOpenMenuId(openMenuId === token.id ? null : token.id)
-                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setOpenMenuId(openMenuId === token.id ? null : token.id);
+                            }}
                             className="transition-all hover:opacity-80 hover:bg-opacity-10 flex items-center justify-center"
                             style={{
                               width: '36px',
@@ -387,7 +411,6 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                 className="absolute z-20 overflow-hidden animate-slide-down" 
                                 style={{ 
                                   width: '144px',
-                                  height: '72px',
                                   backgroundColor: 'var(--bg-secondary)', 
                                   borderRadius: '8px',
                                   padding: '4px',

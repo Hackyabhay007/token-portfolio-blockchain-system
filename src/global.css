@@ -372,6 +372,19 @@ table {
   table-layout: auto;
 }
 
+/* Disable focus outline on Recharts elements */
+.recharts-surface,
+.recharts-wrapper,
+.recharts-responsive-container {
+  outline: none !important;
+}
+
+.recharts-surface:focus,
+.recharts-wrapper:focus,
+.recharts-responsive-container:focus {
+  outline: none !important;
+}
+
 /* Editing row highlight */
 tr[style*="scale(1.01)"] {
   box-shadow: 0 0 0 1px rgba(169, 232, 81, 0.2);

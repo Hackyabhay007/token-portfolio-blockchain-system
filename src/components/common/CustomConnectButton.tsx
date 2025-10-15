@@ -66,7 +66,8 @@ export const CustomConnectButton = () => {
                       cursor: 'pointer',
                       whiteSpace: 'nowrap',
                       fontSize: '14px',
-                      lineHeight: '20px'
+                      lineHeight: '20px',
+                      outline: 'none'
                     }}
                   >
                     <WalletIcon />
@@ -103,7 +104,9 @@ export const CustomConnectButton = () => {
                     paddingBottom: '6px',
                     paddingLeft: '10px',
                     boxShadow: '0px 0.75px 0px 0px var(--shadow-inset) inset, 0px 1px 2px 0px var(--accent-border-light), 0px 0px 0px 1px var(--accent-border)',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    border: 'none',
+                    outline: 'none'
                   }}
                 >
                   <WalletIcon />
