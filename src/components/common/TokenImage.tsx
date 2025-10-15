@@ -15,13 +15,13 @@ export const TokenImage = ({ src, alt, symbol, size = 32 }: TokenImageProps) => 
     <div style={{ position: 'relative', width: `${size}px`, height: `${size}px`, flexShrink: 0 }}>
       {!imageLoaded && !imageError && (
         <div 
-          className="animate-spin"
           style={{ 
             position: 'absolute',
             inset: 0,
-            border: '2px solid rgba(169, 232, 81, 0.2)',
-            borderTopColor: '#A9E851',
-            borderRadius: '50%'
+            borderRadius: '50%',
+            background: 'linear-gradient(90deg, rgba(169, 232, 81, 0.05) 0%, rgba(169, 232, 81, 0.15) 50%, rgba(169, 232, 81, 0.05) 100%)',
+            backgroundSize: '200% 100%',
+            animation: 'shimmer 1.5s ease-in-out infinite'
           }}
         />
       )}
