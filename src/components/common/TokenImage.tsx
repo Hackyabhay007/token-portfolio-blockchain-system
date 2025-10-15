@@ -18,7 +18,7 @@ export const TokenImage = ({ src, alt, symbol, size, variant = 'modal' }: TokenI
         height: `${actualSize}px`,
         flexShrink: 0,
         borderRadius: '4px',
-        border: '0.5px solid #FFFFFF1A'
+        border: '0.5px solid var(--border-light)'
       }
     : {
         position: 'relative' as const,
@@ -27,8 +27,8 @@ export const TokenImage = ({ src, alt, symbol, size, variant = 'modal' }: TokenI
         flexShrink: 0,
         borderRadius: '6px',
         padding: '2px',
-        background: '#212124',
-        boxShadow: '0px 0px 0px 1px #00000014, 0px 1px 2px 0px #0000001F'
+        background: 'var(--bg-primary)',
+        boxShadow: '0px 0px 0px 1px var(--shadow-darker), 0px 1px 2px 0px var(--shadow-light)'
       };
 
   const innerSize = isTable ? actualSize : actualSize - 4;
@@ -59,7 +59,7 @@ export const TokenImage = ({ src, alt, symbol, size, variant = 'modal' }: TokenI
           justifyContent: 'center',
           fontSize: `${innerSize * 0.4375}px`,
           fontWeight: 600,
-          color: '#A9E851'
+          color: 'var(--accent-primary)'
         }}>
           {symbol.charAt(0).toUpperCase()}
         </div>

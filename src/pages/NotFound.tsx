@@ -7,9 +7,9 @@ export const NotFound = () => {
         {/* 404 Icon */}
         <div className="mb-8 flex justify-center">
           <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="80" stroke="#52525B" strokeWidth="4" opacity="0.3"/>
+            <circle cx="100" cy="100" r="80" stroke="var(--neutral-600)" strokeWidth="4" opacity="0.3"/>
             <path d="M70 85L85 70M130 85L115 70M70 130C70 130 80 140 100 140C120 140 130 130 130 130" 
-              stroke="#52525B" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
+              stroke="var(--neutral-600)" strokeWidth="4" strokeLinecap="round" opacity="0.5"/>
           </svg>
         </div>
 
@@ -21,7 +21,7 @@ export const NotFound = () => {
             lineHeight: '1',
             letterSpacing: '-0.02em',
             fontWeight: 600,
-            color: '#F4F4F5'
+            color: 'var(--text-bright)'
           }}
         >
           404
@@ -34,7 +34,7 @@ export const NotFound = () => {
             fontSize: '24px',
             lineHeight: '32px',
             fontWeight: 500,
-            color: '#F4F4F5'
+            color: 'var(--text-bright)'
           }}
         >
           Page Not Found
@@ -45,7 +45,7 @@ export const NotFound = () => {
           style={{ 
             fontSize: '16px',
             lineHeight: '24px',
-            color: '#A1A1AA',
+            color: 'var(--text-secondary)',
             maxWidth: '400px',
             margin: '0 auto 32px'
           }}
@@ -58,8 +58,8 @@ export const NotFound = () => {
           to="/dashboard"
           className="inline-flex items-center font-medium transition-all hover:opacity-90"
           style={{ 
-            backgroundColor: '#A9E851',
-            color: '#000000',
+            backgroundColor: 'var(--accent-primary)',
+            color: 'var(--color-black)',
             height: '40px',
             borderRadius: '100px',
             gap: '8px',
@@ -67,7 +67,7 @@ export const NotFound = () => {
             paddingRight: '24px',
             paddingBottom: '10px',
             paddingLeft: '24px',
-            boxShadow: '0px 0.75px 0px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px 0px rgba(31, 102, 25, 0.4), 0px 0px 0px 1px #1F6619',
+            boxShadow: '0px 0.75px 0px 0px var(--shadow-inset-light) inset, 0px 1px 2px 0px var(--shadow-button), 0px 0px 0px 1px var(--accent-border)',
             justifyContent: 'center',
             textDecoration: 'none',
             fontSize: '16px',

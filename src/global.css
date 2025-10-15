@@ -40,6 +40,34 @@
   --chart-green: #10b981;
   --chart-red: #ef4444;
   --chart-yellow: #f59e0b;
+  
+  /* Additional Colors */
+  --color-error: #EF4444;
+  --color-success: #10B981;
+  --color-warning: #FB7185;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  
+  /* Opacity Variants */
+  --border-light: #FFFFFF1A;
+  --bg-overlay: #212124D9;
+  --bg-dark: #18181B;
+  --bg-divider: #212124;
+  --neutral-600: #52525B;
+  --text-bright: #F4F4F5;
+  --accent-selected: #A9E8510F;
+  --accent-shadow: #A9E85133;
+  --accent-border: #1F6619;
+  --accent-border-light: #1F661966;
+  --shadow-inset: #FFFFFF33;
+  --shadow-dark: #00000052;
+  --shadow-darker: #00000014;
+  --bg-button-secondary: #FFFFFF0A;
+  --bg-button-secondary-hover: #FFFFFF14;
+  --shadow-light: #0000001F;
+  --shadow-button: rgba(31, 102, 25, 0.4);
+  --shadow-inset-light: rgba(255, 255, 255, 0.2);
+  --bg-fallback: #D9D9D9;
 }
 
 

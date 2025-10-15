@@ -26,12 +26,20 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   // Prevent body scroll when modal is open
   useEffect(() => {
     if (isOpen) {
+      // Get scrollbar width before hiding it
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
+      // Add padding to prevent layout shift when scrollbar disappears
+      if (scrollbarWidth > 0) {
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+      }
     } else {
       document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0px';
     }
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.style.paddingRight = '0px';
     };
   }, [isOpen]);
 
@@ -205,15 +213,15 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   if (!isOpen) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`} style={{ backgroundColor: '#212124D9' }}
+    <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${isClosing ? 'animate-fade-out' : 'animate-fade-in'}`} style={{ backgroundColor: 'var(--bg-overlay)' }}
       onClick={handleClose}
     >
       <div 
         className={`flex flex-col modal-container w-full sm:w-[640px] ${isClosing ? 'animate-scale-out' : 'animate-scale-in'}`}
         style={{
-          backgroundColor: '#212124',
+          backgroundColor: 'var(--bg-primary)',
           borderRadius: '12px',
-          boxShadow: '0px 0px 0px 1px #18181B inset, 0px 0px 0px 1.5px #FFFFFF0F inset, 0px -1px 0px 0px #FFFFFF0A, 0px 0px 0px 1px #FFFFFF1A, 0px 4px 8px 0px #00000052, 0px 8px 16px 0px #00000052',
+          boxShadow: '0px 0px 0px 1px var(--bg-dark) inset, 0px 0px 0px 1.5px #FFFFFF0F inset, 0px -1px 0px 0px #FFFFFF0A, 0px 0px 0px 1px var(--border-light), 0px 4px 8px 0px var(--shadow-dark), 0px 8px 16px 0px var(--shadow-dark)',
           maxWidth: '640px',
           height: '480px',
           justifyContent: 'space-between'
@@ -255,7 +263,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         <div style={{ 
           width: '100%', 
           height: '1px', 
-          backgroundColor: '#FFFFFF1A'
+          backgroundColor: 'var(--border-light)'
         }}></div>
 
         {/* Content */}
@@ -267,7 +275,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           className="flex-1 overflow-y-auto px-6 py-4"
           style={{
             scrollbarWidth: 'thin',
-            scrollbarColor: '#FFFFFF1A transparent',
+            scrollbarColor: 'var(--border-light) transparent',
             minHeight: '320px',
             scrollBehavior: 'smooth'
           }}
@@ -298,7 +306,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
             )}
             {error ? (
               <div className="py-12 text-center">
-                <div className="text-sm mb-3" style={{ color: '#EF4444' }}>{error}</div>
+                <div className="text-sm mb-3" style={{ color: 'var(--color-error)' }}>{error}</div>
                 <button
                   onClick={() => {
                     if (searchQuery) {
@@ -309,7 +317,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                     }
                   }}
                   className="text-sm transition-colors"
-                  style={{ color: '#A9E851' }}
+                  style={{ color: 'var(--accent-primary)' }}
                   onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
                   onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
                 >
@@ -318,7 +326,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
               </div>
             ) : isSearching && searchResults.length === 0 ? (
               <div className="py-12 text-center" style={{ color: 'var(--text-secondary)' }}>
-                <div className="animate-spin w-8 h-8 border-2 border-[#A9E851] border-t-transparent rounded-full mx-auto mb-2"></div>
+                <div className="animate-spin w-8 h-8 border-2 border-[var(--accent-primary)] border-t-transparent rounded-full mx-auto mb-2"></div>
                 <div className="text-sm">Loading...</div>
               </div>
             ) : searchResults.length === 0 && searchQuery ? (
@@ -344,7 +352,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                       width: '14px', 
                       height: '14px', 
                       border: '2px solid rgba(169, 232, 81, 0.3)',
-                      borderTopColor: '#A9E851',
+                      borderTopColor: 'var(--accent-primary)',
                       borderRadius: '50%'
                     }}></div>
                     <span className="text-sm">Loading more...</span>
@@ -357,8 +365,8 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
 
         {/* Footer */}
         <div className="flex items-center justify-end" style={{ 
-          borderTop: '1px solid #FFFFFF1A',
-          backgroundColor: '#27272A',
+          borderTop: '1px solid var(--border-light)',
+          backgroundColor: 'var(--bg-secondary)',
           paddingTop: '12px',
           paddingRight: '16px',
           paddingBottom: '12px',
@@ -373,8 +381,8 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
             disabled={selectedTokens.size === 0 || isAdding}
             className="font-medium transition-colors disabled:cursor-not-allowed flex items-center justify-center"
             style={{
-              backgroundColor: selectedTokens.size === 0 || isAdding ? '#27272A' : '#A9E851',
-              color: selectedTokens.size === 0 || isAdding ? 'var(--text-secondary)' : '#000000',
+              backgroundColor: selectedTokens.size === 0 || isAdding ? 'var(--bg-secondary)' : 'var(--accent-primary)',
+              color: selectedTokens.size === 0 || isAdding ? 'var(--text-secondary)' : 'var(--color-black)',
               borderRadius: '6px',
               paddingTop: '6px',
               paddingBottom: '6px',
@@ -387,18 +395,18 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
               fontWeight: 500,
               lineHeight: '20px',
               letterSpacing: '0%',
-              border: selectedTokens.size === 0 || isAdding ? '1px solid #FFFFFF1A' : 'none',
-              boxShadow: selectedTokens.size === 0 || isAdding ? 'none' : '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
+              border: selectedTokens.size === 0 || isAdding ? '1px solid var(--border-light)' : 'none',
+              boxShadow: selectedTokens.size === 0 || isAdding ? 'none' : '0px 0.75px 0px 0px var(--shadow-inset) inset, 0px 1px 2px 0px var(--accent-border-light), 0px 0px 0px 1px var(--accent-border)',
               opacity: isAdding ? 0.7 : 1
             }}
             onMouseEnter={(e) => {
               if (selectedTokens.size > 0 && !isAdding) {
-                e.currentTarget.style.backgroundColor = '#bef264';
+                e.currentTarget.style.backgroundColor = 'var(--accent-hover)';
               }
             }}
             onMouseLeave={(e) => {
               if (selectedTokens.size > 0 && !isAdding) {
-                e.currentTarget.style.backgroundColor = '#A9E851';
+                e.currentTarget.style.backgroundColor = 'var(--accent-primary)';
               }
             }}
           >
@@ -422,7 +430,7 @@ const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: T
       style={{
         maxWidth: '624px',
         borderRadius: '6px',
-        backgroundColor: isSelected ? '#A9E8510F' : 'transparent',
+        backgroundColor: isSelected ? 'var(--accent-selected)' : 'transparent',
         paddingTop: '8px',
         paddingRight: '8px',
         paddingBottom: '8px',
@@ -437,7 +445,7 @@ const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: T
         }
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = isSelected ? '#A9E8510F' : 'transparent';
+        e.currentTarget.style.backgroundColor = isSelected ? 'var(--accent-selected)' : 'transparent';
       }}
     >
       <TokenImage src={token.image} alt={token.name} symbol={token.symbol} variant="modal" />
@@ -458,7 +466,7 @@ const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: T
             height: '15px',
             minWidth: '15px',
             minHeight: '15px',
-            backgroundColor: '#A9E851',
+            backgroundColor: 'var(--accent-primary)',
             flexShrink: 0
           }}>
             <img src="/icons/check.svg" alt="Check" style={{ width: '9px', height: '9px' }} />

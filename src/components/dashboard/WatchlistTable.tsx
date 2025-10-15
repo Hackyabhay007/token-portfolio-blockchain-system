@@ -99,7 +99,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
             }}
           >
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 8V24M8 16H24" stroke="#A9E851" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M16 8V24M8 16H24" stroke="var(--accent-primary)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
           <div style={{ 
@@ -136,7 +136,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                 {currentTokens.map((token: WatchlistToken) => {
                   const value = token.holdings * token.current_price;
                   const isPositive = token.price_change_percentage_24h >= 0;
-                  const sparklineColor = isPositive ? '#10B981' : '#EF4444';
+                  const sparklineColor = isPositive ? 'var(--color-success)' : 'var(--color-error)';
 
                   return (
                     <tr
@@ -173,7 +173,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                         fontWeight: 400,
                         lineHeight: '20px',
                         letterSpacing: '0%',
-                        color: '#A1A1AA'
+                        color: 'var(--text-secondary)'
                       }}>
                         ${token.current_price.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
@@ -189,7 +189,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                             fontWeight: 400,
                             lineHeight: '20px',
                             letterSpacing: '0%',
-                            color: '#A1A1AA'
+                            color: 'var(--text-secondary)'
                           }}
                         >
                           {isPositive ? '+' : ''}
@@ -244,7 +244,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                   backgroundColor: 'var(--bg-tertiary)', 
                                   borderRadius: '6px',
                                   color: 'var(--text-primary)',
-                                  boxShadow: '0px 0px 0px 1px #A9E851, 0px 0px 0px 4px #A9E85133',
+                                  boxShadow: '0px 0px 0px 1px var(--accent-primary), 0px 0px 0px 4px var(--accent-shadow)',
                                   transition: 'all 0.2s ease'
                                 }}
                                 placeholder="Enter amount"
@@ -293,8 +293,8 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                               style={{ 
                                 width: '51px',
                                 height: '32px',
-                                backgroundColor: (isSaving || !editValue || editValue.trim() === '') ? '#27272A' : 'var(--accent-primary)',
-                                color: (isSaving || !editValue || editValue.trim() === '') ? 'var(--text-secondary)' : '#000000',
+                                backgroundColor: (isSaving || !editValue || editValue.trim() === '') ? 'var(--bg-secondary)' : 'var(--accent-primary)',
+                                color: (isSaving || !editValue || editValue.trim() === '') ? 'var(--text-secondary)' : 'var(--color-black)',
                                 borderRadius: '6px',
                                 paddingTop: '6px',
                                 paddingBottom: '6px',
@@ -302,7 +302,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                 paddingRight: '10px',
                                 opacity: isSaving ? 0.7 : 1,
                                 cursor: (isSaving || !editValue || editValue.trim() === '') ? 'not-allowed' : 'pointer',
-                                border: (isSaving || !editValue || editValue.trim() === '') ? '1px solid #FFFFFF1A' : 'none'
+                                border: (isSaving || !editValue || editValue.trim() === '') ? '1px solid var(--border-light)' : 'none'
                               }}
                               onMouseEnter={(e) => {
                                 if (!isSaving && editValue && editValue.trim() !== '') {
@@ -330,7 +330,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                               fontWeight: 400,
                               lineHeight: '20px',
                               letterSpacing: '0%',
-                              color: '#F4F4F5',
+                              color: 'var(--text-bright)',
                               transition: 'all 0.2s ease'
                             }}
                           >
@@ -349,7 +349,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                         fontWeight: 400,
                         lineHeight: '20px',
                         letterSpacing: '0%',
-                        color: '#F4F4F5'
+                        color: 'var(--text-bright)'
                       }}>
                         ${value.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
@@ -388,10 +388,10 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                 style={{ 
                                   width: '144px',
                                   height: '72px',
-                                  backgroundColor: '#27272A', 
+                                  backgroundColor: 'var(--bg-secondary)', 
                                   borderRadius: '8px',
                                   padding: '4px',
-                                  boxShadow: '0px 0px 0px 1px #00000014, 0px 4px 8px 0px #00000014, 0px 8px 16px 0px #00000014',
+                                  boxShadow: '0px 0px 0px 1px var(--shadow-darker), 0px 4px 8px 0px var(--shadow-darker), 0px 8px 16px 0px var(--shadow-darker)',
                                   top: '50%',
                                   right: '28px',
                                   transform: 'translateY(-50%)'
@@ -417,14 +417,14 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                 <div style={{ 
                                   width: '152px', 
                                   height: '1px', 
-                                  backgroundColor: '#212124',
+                                  backgroundColor: 'var(--bg-divider)',
                                   marginLeft: '-8px'
                                 }}></div>
                                 <button
                                   onClick={() => handleRemoveToken(token.id)}
                                   className="w-full text-left text-sm transition-colors flex items-center gap-2"
                                   style={{ 
-                                    color: '#FB7185',
+                                    color: 'var(--color-warning)',
                                     height: '32px',
                                     padding: '8px',
                                     borderRadius: '4px'

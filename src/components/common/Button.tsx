@@ -20,9 +20,9 @@ export const Button = ({
   
   const variantStyles = {
     primary: {
-      backgroundColor: '#A9E851',
-      color: '#000000',
-      hoverColor: '#bef264',
+      backgroundColor: 'var(--accent-primary)',
+      color: 'var(--color-black)',
+      hoverColor: 'var(--accent-hover)',
       borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
@@ -32,12 +32,12 @@ export const Button = ({
       paddingBottom: '8px',
       gap: '6px',
       lineHeight: '20px',
-      boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
+      boxShadow: '0px 0.75px 0px 0px var(--shadow-inset) inset, 0px 1px 2px 0px var(--accent-border-light), 0px 0px 0px 1px var(--accent-border)',
     },
     secondary: {
-      backgroundColor: '#FFFFFF0A',
+      backgroundColor: 'var(--bg-button-secondary)',
       color: 'var(--text-primary)',
-      hoverColor: '#FFFFFF14',
+      hoverColor: 'var(--bg-button-secondary-hover)',
       borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
@@ -47,11 +47,11 @@ export const Button = ({
       paddingBottom: '8px',
       gap: '6px',
       lineHeight: '20px',
-      boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #0000001F, 0px 0px 0px 1px #00000014',
+      boxShadow: '0px 0.75px 0px 0px var(--shadow-inset) inset, 0px 1px 2px 0px var(--shadow-light), 0px 0px 0px 1px var(--shadow-darker)',
     },
     danger: {
-      backgroundColor: '#EF4444',
-      color: '#FFFFFF',
+      backgroundColor: 'var(--color-error)',
+      color: 'var(--color-white)',
       hoverColor: '#DC2626',
       borderRadius: '6px',
       height: '36px',

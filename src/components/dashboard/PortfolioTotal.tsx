@@ -57,7 +57,7 @@ export const PortfolioTotal = () => {
           </div>
           {lastUpdated && (
             <div className="mt-2" style={{ 
-              color: '#A1A1AA',
+              color: 'var(--text-secondary)',
               fontWeight: 400,
               fontSize: '12px',
               lineHeight: '20px',
@@ -97,14 +97,14 @@ export const PortfolioTotal = () => {
               ) : (
                 <div className="w-full h-full flex items-center justify-center relative">
                   <svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="96" cy="96" r="78" stroke="#52525B" strokeWidth="8" opacity="0.6"/>
+                    <circle cx="96" cy="96" r="78" stroke="var(--neutral-600)" strokeWidth="8" opacity="0.6"/>
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
                     <div style={{ 
                       fontSize: '16px',
                       lineHeight: '24px',
                       fontWeight: 500,
-                      color: '#F4F4F5',
+                      color: 'var(--text-bright)',
                       marginBottom: '4px'
                     }}>
                       No holdings yet
@@ -133,7 +133,7 @@ export const PortfolioTotal = () => {
                     {item.name} ({item.symbol.toUpperCase()})
                   </div>
                   <div style={{ 
-                    color: '#A1A1AA',
+                    color: 'var(--text-secondary)',
                     fontWeight: 500,
                     fontSize: '14px',
                     lineHeight: '20px',
@@ -162,7 +162,7 @@ export const PortfolioTotal = () => {
                 letterSpacing: '-2.24%',
                 fontWeight: 500,
                 fontStyle: 'normal',
-                color: '#F4F4F5'
+                color: 'var(--text-bright)'
               }}
             >
               ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -170,7 +170,7 @@ export const PortfolioTotal = () => {
           </div>
           {lastUpdated && (
             <div style={{ 
-              color: '#A1A1AA',
+              color: 'var(--text-secondary)',
               fontWeight: 400,
               fontSize: '12px',
               lineHeight: '20px',
@@ -209,14 +209,14 @@ export const PortfolioTotal = () => {
               ) : (
                 <div className="w-full h-full flex items-center justify-center relative">
                   <svg width="144" height="144" viewBox="0 0 144 144" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="72" cy="72" r="58" stroke="#52525B" strokeWidth="8" opacity="0.6"/>
+                    <circle cx="72" cy="72" r="58" stroke="var(--neutral-600)" strokeWidth="8" opacity="0.6"/>
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center" style={{ pointerEvents: 'auto' }}>
                     <div style={{ 
                       fontSize: '14px',
                       lineHeight: '20px',
                       fontWeight: 500,
-                      color: '#F4F4F5'
+                      color: 'var(--text-bright)'
                     }}>
                       No holdings yet
                     </div>
@@ -244,7 +244,7 @@ export const PortfolioTotal = () => {
                     {item.name} ({item.symbol.toUpperCase()})
                   </div>
                   <div style={{ 
-                    color: '#A1A1AA',
+                    color: 'var(--text-secondary)',
                     fontWeight: 500,
                     fontSize: '14px',
                     lineHeight: '20px',

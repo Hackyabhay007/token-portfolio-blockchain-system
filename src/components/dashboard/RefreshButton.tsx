@@ -17,18 +17,18 @@ export const RefreshButton = ({ onClick, isRefreshing, disabled }: RefreshButton
         style={{
           width: '36px',
           height: '36px',
-          backgroundColor: '#FFFFFF0A',
+          backgroundColor: 'var(--bg-button-secondary)',
           borderRadius: '6px',
           padding: '10.5px',
-          boxShadow: '0px 1px 2px 0px #0000001F, 0px 0px 0px 1px #00000014'
+          boxShadow: '0px 1px 2px 0px var(--shadow-light), 0px 0px 0px 1px var(--shadow-darker)'
         }}
         onMouseEnter={(e) => {
           if (!disabled && !isRefreshing) {
-            e.currentTarget.style.backgroundColor = '#FFFFFF14';
+            e.currentTarget.style.backgroundColor = 'var(--bg-button-secondary-hover)';
           }
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = '#FFFFFF0A';
+          e.currentTarget.style.backgroundColor = 'var(--bg-button-secondary)';
         }}
       >
         <img 

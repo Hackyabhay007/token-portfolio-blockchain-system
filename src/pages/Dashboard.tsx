@@ -51,16 +51,16 @@ export const Dashboard = () => {
           <div 
             className="mb-4 animate-fade-in" 
             style={{ 
-              backgroundColor: '#27272A',
+              backgroundColor: 'var(--bg-secondary)',
               borderRadius: '8px',
               padding: '12px 16px',
-              border: '1px solid #EF4444',
+              border: '1px solid var(--color-error)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between'
             }}
           >
-            <div style={{ color: '#EF4444', fontSize: '14px' }}>{refreshError}</div>
+            <div style={{ color: 'var(--color-error)', fontSize: '14px' }}>{refreshError}</div>
             <button
               onClick={() => setRefreshError(null)}
               style={{ color: 'var(--text-secondary)', fontSize: '20px', lineHeight: '1' }}
