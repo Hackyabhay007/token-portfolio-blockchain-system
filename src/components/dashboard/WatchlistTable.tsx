@@ -27,11 +27,13 @@ export const WatchlistTable = () => {
   }
 
   const handleEditHoldings = (id: string, currentHoldings: number) => {
+    setOpenMenuId(null); // Close menu when editing
     setEditingId(id);
-    setEditValue(currentHoldings.toString());
+    setEditValue(''); // Start with empty input
   };
 
   const handleSaveHoldings = async (id: string) => {
+    if (!editValue || editValue.trim() === '') return; // Don't save if empty
     setIsSaving(true);
     const value = parseFloat(editValue) || 0;
     dispatch(updateHoldings({ id, holdings: value }));
@@ -39,13 +41,15 @@ export const WatchlistTable = () => {
     await new Promise(resolve => setTimeout(resolve, 300));
     setIsSaving(false);
     setEditingId(null);
+    setEditValue('');
   };
 
   const handleKeyPress = (e: React.KeyboardEvent, id: string) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && editValue && editValue.trim() !== '') {
       handleSaveHoldings(id);
     } else if (e.key === 'Escape') {
       setEditingId(null);
+      setEditValue('');
     }
   };
 
@@ -122,7 +126,9 @@ export const WatchlistTable = () => {
                         backgroundColor: 'var(--bg-primary)',
                         height: '48px',
                         paddingLeft: '24px',
-                        paddingRight: '24px'
+                        paddingRight: '24px',
+                        transform: editingId === token.id ? 'scale(1.01)' : 'scale(1)',
+                        transition: 'all 0.2s ease'
                       }}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.05)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
@@ -188,13 +194,19 @@ export const WatchlistTable = () => {
                       {/* Holdings */}
                       <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', width: '180px' }}>
                         {editingId === token.id ? (
-                          <div className="flex items-center" style={{ gap: '8px' }}>
+                          <div className="flex items-center animate-scale-in" style={{ gap: '8px' }}>
                             <input
                               type="number"
                               value={editValue}
                               onChange={(e) => setEditValue(e.target.value)}
                               onKeyDown={(e) => handleKeyPress(e, token.id)}
-                              className="text-sm focus:outline-none appearance-none"
+                              onBlur={() => {
+                                // Close editing if clicked outside and value is empty
+                                if (!editValue || editValue.trim() === '') {
+                                  setTimeout(() => setEditingId(null), 150);
+                                }
+                              }}
+                              className="text-sm focus:outline-none"
                               style={{ 
                                 width: '109px',
                                 height: '32px',
@@ -203,29 +215,40 @@ export const WatchlistTable = () => {
                                 backgroundColor: 'var(--bg-tertiary)', 
                                 borderRadius: '6px',
                                 color: 'var(--text-primary)',
-                                boxShadow: '0px 0px 0px 1px #A9E851, 0px 0px 0px 4px #A9E85133'
+                                boxShadow: '0px 0px 0px 1px #A9E851, 0px 0px 0px 4px #A9E85133',
+                                transition: 'all 0.2s ease'
                               }}
-                              placeholder="0.0000"
+                              placeholder="Enter amount"
                               autoFocus
                             />
                             <button
                               onClick={() => handleSaveHoldings(token.id)}
-                              disabled={isSaving}
+                              disabled={isSaving || !editValue || editValue.trim() === ''}
                               className="text-black text-sm font-semibold transition-colors flex items-center justify-center"
                               style={{ 
                                 width: '51px',
                                 height: '32px',
-                                backgroundColor: isSaving ? 'var(--accent-hover)' : 'var(--accent-primary)',
+                                backgroundColor: (isSaving || !editValue || editValue.trim() === '') ? '#27272A' : 'var(--accent-primary)',
+                                color: (isSaving || !editValue || editValue.trim() === '') ? 'var(--text-secondary)' : '#000000',
                                 borderRadius: '6px',
                                 paddingTop: '6px',
                                 paddingBottom: '6px',
                                 paddingLeft: '10px',
                                 paddingRight: '10px',
                                 opacity: isSaving ? 0.7 : 1,
-                                cursor: isSaving ? 'not-allowed' : 'pointer'
+                                cursor: (isSaving || !editValue || editValue.trim() === '') ? 'not-allowed' : 'pointer',
+                                border: (isSaving || !editValue || editValue.trim() === '') ? '1px solid #FFFFFF1A' : 'none'
                               }}
-                              onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
-                              onMouseLeave={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--accent-primary)')}
+                              onMouseEnter={(e) => {
+                                if (!isSaving && editValue && editValue.trim() !== '') {
+                                  e.currentTarget.style.backgroundColor = 'var(--accent-hover)';
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isSaving && editValue && editValue.trim() !== '') {
+                                  e.currentTarget.style.backgroundColor = 'var(--accent-primary)';
+                                }
+                              }}
                             >
                               {isSaving ? (
                                 <div className="animate-spin" style={{ width: '14px', height: '14px', border: '2px solid #000', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
@@ -235,13 +258,17 @@ export const WatchlistTable = () => {
                             </button>
                           </div>
                         ) : (
-                          <div style={{ 
-                            fontSize: '13px', 
-                            fontWeight: 400,
-                            lineHeight: '20px',
-                            letterSpacing: '0%',
-                            color: '#F4F4F5'
-                          }}>
+                          <div 
+                            className="animate-fade-in"
+                            style={{ 
+                              fontSize: '13px', 
+                              fontWeight: 400,
+                              lineHeight: '20px',
+                              letterSpacing: '0%',
+                              color: '#F4F4F5',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
                             {token.holdings.toFixed(4)}
                           </div>
                         )}
@@ -272,16 +299,17 @@ export const WatchlistTable = () => {
                             onClick={() =>
                               setOpenMenuId(openMenuId === token.id ? null : token.id)
                             }
-                            className="transition-opacity hover:opacity-80 flex items-center justify-center"
+                            className="transition-all hover:opacity-80 hover:bg-opacity-10 flex items-center justify-center"
                             style={{
-                              width: '28px',
-                              height: '28px',
+                              width: '36px',
+                              height: '36px',
                               borderRadius: '6px',
-                              padding: '6.5px',
                               backgroundColor: 'transparent'
                             }}
+                            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(161, 161, 170, 0.1)'}
+                            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                           >
-                            <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '15px', height: '15px' }} />
+                            <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '18px', height: '18px' }} />
                           </button>
 
                           {openMenuId === token.id && (

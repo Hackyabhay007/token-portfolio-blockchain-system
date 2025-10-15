@@ -72,7 +72,7 @@ input[type="number"] {
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
-  height: 8px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -95,7 +95,7 @@ input[type="number"] {
   }
   
   .overflow-x-auto::-webkit-scrollbar {
-    height: 6px;
+    height: 3px;
   }
   
   .overflow-x-auto::-webkit-scrollbar-thumb {
@@ -263,6 +263,16 @@ input[type="number"] {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Prevent horizontal scroll on table */
+table {
+  table-layout: auto;
+}
+
+/* Editing row highlight */
+tr[style*="scale(1.01)"] {
+  box-shadow: 0 0 0 1px rgba(169, 232, 81, 0.2);
+}
+
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   body {
@@ -272,5 +282,11 @@ input[type="number"] {
   /* Ensure proper mobile viewport */
   html {
     -webkit-text-size-adjust: 100%;
+  }
+  
+  /* Larger touch targets on mobile */
+  table button[style*="width: 36px"] {
+    width: 40px !important;
+    height: 40px !important;
   }
 }
