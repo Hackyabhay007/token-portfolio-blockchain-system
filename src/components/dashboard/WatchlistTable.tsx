@@ -297,7 +297,7 @@ export const WatchlistTable = () => {
                               }}
                             >
                               {isSaving ? (
-                                <div className="animate-spin" style={{ width: '14px', height: '14px', border: '2px solid #000', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
+                                <div className="animate-spin" style={{ width: '14px', height: '14px', border: '2px solid var(--text-secondary)', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
                               ) : (
                                 'Save'
                               )}
