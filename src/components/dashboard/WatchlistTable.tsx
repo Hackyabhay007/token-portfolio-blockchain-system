@@ -225,7 +225,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                             fontWeight: 400,
                             lineHeight: '20px',
                             letterSpacing: '0%',
-                            color: 'var(--text-secondary)'
+                            color: isPositive ? 'var(--color-success)' : 'var(--color-error)'
                           }}
                         >
                           {isPositive ? '+' : ''}
