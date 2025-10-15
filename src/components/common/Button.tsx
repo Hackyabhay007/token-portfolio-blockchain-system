@@ -16,32 +16,50 @@ export const Button = ({
   className = '',
   ...props 
 }: ButtonProps) => {
-  const baseStyles = "px-6 font-semibold transition-colors flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed";
+  const baseStyles = "font-medium transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed";
   
   const variantStyles = {
     primary: {
       backgroundColor: 'var(--accent-primary)',
       color: '#000000',
       hoverColor: 'var(--accent-hover)',
-      borderRadius: '12px',
+      borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      paddingTop: '8px',
+      paddingBottom: '8px',
+      gap: '6px',
+      lineHeight: '20px',
     },
     secondary: {
       backgroundColor: 'var(--bg-tertiary)',
       color: 'var(--text-primary)',
       hoverColor: '#3d4149',
-      borderRadius: '12px',
+      borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      paddingTop: '8px',
+      paddingBottom: '8px',
+      gap: '6px',
+      lineHeight: '20px',
     },
     danger: {
       backgroundColor: '#EF4444',
       color: '#FFFFFF',
       hoverColor: '#DC2626',
-      borderRadius: '12px',
+      borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      paddingTop: '8px',
+      paddingBottom: '8px',
+      gap: '6px',
+      lineHeight: '20px',
     },
   };
 
@@ -56,6 +74,14 @@ export const Button = ({
         borderRadius: currentVariant.borderRadius,
         height: currentVariant.height,
         fontSize: currentVariant.fontSize,
+        paddingLeft: currentVariant.paddingLeft,
+        paddingRight: currentVariant.paddingRight,
+        paddingTop: currentVariant.paddingTop,
+        paddingBottom: currentVariant.paddingBottom,
+        gap: currentVariant.gap,
+        lineHeight: currentVariant.lineHeight,
+        fontWeight: 500,
+        letterSpacing: '0%',
       }}
       onMouseEnter={(e) => {
         if (!disabled && !isLoading) {
