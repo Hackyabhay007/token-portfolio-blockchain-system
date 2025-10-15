@@ -42,6 +42,22 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
       document.removeEventListener('click', handleClickOutside);
     };
   }, [openMenuId]);
+
+  // Prevent body scroll on mobile when menu is open
+  useEffect(() => {
+    if (openMenuId !== null) {
+      const isMobile = window.innerWidth < 1024;
+      if (isMobile) {
+        document.body.style.overflow = 'hidden';
+      }
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [openMenuId]);
   
   // Reset to page 1 if current page exceeds total pages
   if (currentPage > totalPages && totalPages > 0) {
