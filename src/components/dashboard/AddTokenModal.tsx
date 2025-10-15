@@ -19,11 +19,9 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const [trendingTokens, setTrendingTokens] = useState<Token[]>([]);
   const [selectedTokens, setSelectedTokens] = useState<Set<string>>(new Set());
   const [isSearching, setIsSearching] = useState(false);
-  const [isLoadingTrending, setIsLoadingTrending] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [trendingError, setTrendingError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -38,8 +36,6 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   }, [isOpen, watchlist.length]);
 
   const loadTrendingTokens = async () => {
-    setIsLoadingTrending(true);
-    setTrendingError(null);
     try {
       const tokens = await coinGeckoApi.getTrendingTokens();
       // Filter out already added tokens
@@ -49,9 +45,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       setTrendingTokens(filteredTokens);
     } catch (error) {
       console.error('Error loading trending tokens:', error);
-      setTrendingError('Failed to load trending tokens');
-    } finally {
-      setIsLoadingTrending(false);
+      // Silently fail - trending is optional
     }
   };
 
@@ -257,48 +251,20 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           }}
         >
           {/* Trending Section */}
-          {!searchQuery && (
-            <>
-              {isLoadingTrending ? (
-                <div className="mb-6">
-                  <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
-                  <div className="py-8 text-center" style={{ color: 'var(--text-secondary)' }}>
-                    <div className="animate-spin w-6 h-6 border-2 border-[#A9E851] border-t-transparent rounded-full mx-auto mb-2"></div>
-                    <div className="text-sm">Loading trending...</div>
-                  </div>
-                </div>
-              ) : trendingError ? (
-                <div className="mb-6">
-                  <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
-                  <div className="py-8 text-center">
-                    <div className="text-sm" style={{ color: '#EF4444' }}>{trendingError}</div>
-                    <button
-                      onClick={loadTrendingTokens}
-                      className="mt-3 text-sm transition-colors"
-                      style={{ color: '#A9E851' }}
-                      onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                      onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
-                    >
-                      Try again
-                    </button>
-                  </div>
-                </div>
-              ) : trendingTokens.length > 0 ? (
-                <div className="mb-6">
-                  <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
-                  <div className="space-y-1">
-                    {trendingTokens.map((token) => (
-                      <TokenRow
-                        key={token.id}
-                        token={token}
-                        isSelected={selectedTokens.has(token.id)}
-                        onToggle={() => toggleTokenSelection(token.id)}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-            </>
+          {!searchQuery && trendingTokens.length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
+              <div className="space-y-1">
+                {trendingTokens.map((token) => (
+                  <TokenRow
+                    key={token.id}
+                    token={token}
+                    isSelected={selectedTokens.has(token.id)}
+                    onToggle={() => toggleTokenSelection(token.id)}
+                  />
+                ))}
+              </div>
+            </div>
           )}
 
           {/* Search Results / Top Tokens */}
