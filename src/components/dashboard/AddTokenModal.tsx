@@ -23,6 +23,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const [isClosing, setIsClosing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
+  const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout>();
@@ -94,7 +95,8 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
     if (!container || isSearching || !hasMore || searchQuery.trim()) return;
 
     const { scrollTop, scrollHeight, clientHeight } = container;
-    if (scrollHeight - scrollTop <= clientHeight * 1.5) {
+    // Trigger earlier - when 80% scrolled instead of 150%
+    if (scrollHeight - scrollTop <= clientHeight * 1.2) {
       setIsSearching(true);
       try {
         const nextPage = page + 1;
@@ -117,7 +119,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         setIsSearching(false);
       }
     }
-  }, [isSearching, hasMore, page, searchQuery]);
+  }, [isSearching, hasMore, page, searchQuery, watchlist]);
 
   // Load initial top tokens when no search
   useEffect(() => {
@@ -130,6 +132,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const loadInitialTokens = async () => {
     setIsSearching(true);
     setError(null);
+    setInitialLoadComplete(false);
     try {
       const tokens = await coinGeckoApi.getTopTokens(1, 50);
       // Filter out already added tokens
@@ -138,6 +141,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       );
       setSearchResults(filteredTokens);
       setHasMore(tokens.length >= 50);
+      setInitialLoadComplete(true);
     } catch (error) {
       console.error('Error loading initial tokens:', error);
       setError('Failed to load tokens. Please check your connection.');
@@ -255,12 +259,14 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
             <div className="mb-4">
               <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
               <div className="space-y-1">
-                {trendingTokens.map((token) => (
+                {trendingTokens.map((token, index) => (
                   <TokenRow
                     key={token.id}
                     token={token}
                     isSelected={selectedTokens.has(token.id)}
                     onToggle={() => toggleTokenSelection(token.id)}
+                    index={index}
+                    animate={true}
                   />
                 ))}
               </div>
@@ -309,12 +315,14 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
               </div>
             ) : (
               <div className="space-y-1">
-                {searchResults.map((token) => (
+                {searchResults.map((token, index) => (
                   <TokenRow
                     key={token.id}
                     token={token}
                     isSelected={selectedTokens.has(token.id)}
                     onToggle={() => toggleTokenSelection(token.id)}
+                    index={index}
+                    animate={!initialLoadComplete || index < 50}
                   />
                 ))}
                 {isSearching && searchResults.length > 0 && (
@@ -397,13 +405,15 @@ interface TokenRowProps {
   token: Token;
   isSelected: boolean;
   onToggle: () => void;
+  index?: number;
+  animate?: boolean;
 }
 
-const TokenRow = ({ token, isSelected, onToggle }: TokenRowProps) => {
+const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: TokenRowProps) => {
   return (
     <button
       onClick={onToggle}
-      className="flex items-center transition-colors w-full"
+      className={`flex items-center transition-colors w-full ${animate ? 'animate-modal-row' : ''}`}
       style={{
         maxWidth: '624px',
         borderRadius: '6px',
@@ -413,7 +423,8 @@ const TokenRow = ({ token, isSelected, onToggle }: TokenRowProps) => {
         paddingBottom: '8px',
         paddingLeft: '8px',
         gap: '12px',
-        height: '44px'
+        height: '44px',
+        ...(animate && { animationDelay: `${index * 0.03}s` })
       }}
       onMouseEnter={(e) => {
         if (!isSelected) {
