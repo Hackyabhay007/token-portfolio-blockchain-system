@@ -428,7 +428,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                             onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--hover-overlay-strong)'}
                             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                           >
-                            <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '18px', height: '18px' }} />
+                            <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '30px', height: '30px' }} />
                           </button>
 
                           {openMenuId === token.id && (
