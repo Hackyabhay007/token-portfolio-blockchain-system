@@ -119,7 +119,7 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto lg:overflow-x-visible">
             <table className="w-full" style={{ minWidth: '800px' }}>
               <thead style={{ backgroundColor: 'var(--bg-component)' }}>
                 <tr className="text-left" style={{ color: 'var(--text-secondary)', borderBottom: '1px solid rgba(161, 161, 170, 0.2)' }}>
