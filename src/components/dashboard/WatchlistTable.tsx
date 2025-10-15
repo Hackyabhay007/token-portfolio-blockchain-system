@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { updateHoldings, removeTokenFromWatchlist } from '../../store/portfolioSlice';
 import { Sparkline } from './Sparkline';
+import { TokenImage } from '../common/TokenImage';
 
 export const WatchlistTable = () => {
   const dispatch = useDispatch();
@@ -129,11 +130,7 @@ export const WatchlistTable = () => {
                       {/* Token */}
                       <td style={{ paddingLeft: '24px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
                         <div className="flex items-center gap-3">
-                          <img
-                            src={token.image}
-                            alt={token.name}
-                            className="w-8 h-8 rounded-full"
-                          />
+                          <TokenImage src={token.image} alt={token.name} symbol={token.symbol} size={32} />
                           <div style={{ fontSize: '14px', fontWeight: 400 }}>
                             {token.name} <span style={{ color: 'var(--text-secondary)' }}>({token.symbol.toUpperCase()})</span>
                           </div>

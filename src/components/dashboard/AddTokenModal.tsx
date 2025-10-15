@@ -4,6 +4,7 @@ import type { RootState } from '../../store/store';
 import { addTokensToWatchlist } from '../../store/portfolioSlice';
 import type { Token } from '../../store/portfolioSlice';
 import { coinGeckoApi } from '../../services/coinGeckoApi';
+import { TokenImage } from '../common/TokenImage';
 
 interface AddTokenModalProps {
   isOpen: boolean;
@@ -351,7 +352,16 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                   />
                 ))}
                 {isSearching && searchResults.length > 0 && (
-                  <div className="py-4 text-center text-sm" style={{ color: 'var(--text-secondary)' }}>Loading more...</div>
+                  <div className="py-4 flex items-center justify-center gap-2" style={{ color: 'var(--text-secondary)' }}>
+                    <div className="animate-spin" style={{ 
+                      width: '14px', 
+                      height: '14px', 
+                      border: '2px solid rgba(169, 232, 81, 0.3)',
+                      borderTopColor: '#A9E851',
+                      borderRadius: '50%'
+                    }}></div>
+                    <span className="text-sm">Loading more...</span>
+                  </div>
                 )}
               </div>
             )}
@@ -448,7 +458,7 @@ const TokenRow = ({ token, isSelected, onToggle }: TokenRowProps) => {
         e.currentTarget.style.backgroundColor = isSelected ? '#A9E8510F' : 'transparent';
       }}
     >
-      <img src={token.image} alt={token.name} className="w-8 h-8 rounded-full" />
+      <TokenImage src={token.image} alt={token.name} symbol={token.symbol} size={32} />
       <div className="flex-1 text-left" style={{ 
         fontWeight: 400, 
         fontSize: '14px', 
