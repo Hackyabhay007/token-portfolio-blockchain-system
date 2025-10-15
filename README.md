@@ -28,6 +28,7 @@ Before you begin, ensure you have the following installed:
 - **Node.js** (v18 or higher)
 - **npm** or **yarn** package manager
 - A **CoinGecko API key** (free tier available at [CoinGecko](https://www.coingecko.com/en/api))
+- A **WalletConnect Project ID** (free at [WalletConnect Cloud](https://cloud.walletconnect.com/))
 
 ## Setup Instructions
 
@@ -58,10 +59,11 @@ Create a `.env` file in the root directory by copying the example file:
 cp .env.example .env
 ```
 
-Then edit the `.env` file and add your CoinGecko API key:
+Then edit the `.env` file and add your API keys:
 
 ```env
 VITE_COINGECKO_API_KEY=your_actual_api_key_here
+VITE_WALLETCONNECT_PROJECT_ID=your_actual_project_id_here
 ```
 
 **Getting a CoinGecko API Key:**
@@ -69,6 +71,13 @@ VITE_COINGECKO_API_KEY=your_actual_api_key_here
 2. Sign up for a free account
 3. Navigate to your dashboard to get your API key
 4. Copy the key and paste it in your `.env` file
+
+**Getting a WalletConnect Project ID:**
+1. Visit [WalletConnect Cloud](https://cloud.walletconnect.com/)
+2. Sign up for a free account
+3. Create a new project
+4. Copy the Project ID from your project dashboard
+5. Paste it in your `.env` file
 
 ### 4. Run the Development Server
 
