@@ -9,7 +9,7 @@ export const Header = () => {
             <img src="/logo.svg" alt="Token Portfolio Logo" className="w-8 h-8" />
             <h1 
               style={{
-          
+                color: 'var(--text-primary)',
                 fontWeight: 600,
                 fontSize: '20px',
                 lineHeight: '24px',

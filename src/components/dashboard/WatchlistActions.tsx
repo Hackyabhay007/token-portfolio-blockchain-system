@@ -20,6 +20,7 @@ export const WatchlistActions = ({
         <img src="/icons/star.svg" alt="Star" style={{ width: '28px', height: '28px' }} />
         <span 
           style={{
+            color: 'var(--text-primary)',
             fontWeight: 500,
             fontSize: '24px',
             lineHeight: '125%',

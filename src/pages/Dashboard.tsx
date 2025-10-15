@@ -1,20 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
-import { updatePrices } from '../store/portfolioSlice';
+import { updatePrices, setInitialLoadComplete } from '../store/portfolioSlice';
 import { coinGeckoApi } from '../services/coinGeckoApi';
 import type { WatchlistToken } from '../types';
 import { PortfolioTotal } from '../components/dashboard/PortfolioTotal';
 import { WatchlistTable } from '../components/dashboard/WatchlistTable';
 import { WatchlistActions } from '../components/dashboard/WatchlistActions';
 import { AddTokenModal } from '../components/dashboard/AddTokenModal';
+import { PortfolioSkeleton, TableSkeleton, WatchlistActionsSkeleton } from '../components/common/SkeletonLoader';
 
 export const Dashboard = () => {
   const dispatch = useDispatch();
-  const { watchlist } = useSelector((state: RootState) => state.portfolio);
+  const { watchlist, isInitialLoading } = useSelector((state: RootState) => state.portfolio);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshError, setRefreshError] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Simulate initial load time for shimmer effect
+    const timer = setTimeout(() => {
+      dispatch(setInitialLoadComplete());
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [dispatch]);
 
   const handleRefreshPrices = async () => {
     if (watchlist.length === 0) return;
@@ -63,18 +72,22 @@ export const Dashboard = () => {
       </div>
       
       <div className="mt-6 sm:mt-0">
-        <PortfolioTotal />
+        {isInitialLoading ? <PortfolioSkeleton /> : <PortfolioTotal />}
       </div>
 
       <div className="px-4 sm:px-0">
-        <WatchlistActions
-          onRefresh={handleRefreshPrices}
-          onAddToken={() => setIsModalOpen(true)}
-          isRefreshing={isRefreshing}
-          hasTokens={watchlist.length > 0}
-        />
+        {isInitialLoading ? (
+          <WatchlistActionsSkeleton />
+        ) : (
+          <WatchlistActions
+            onRefresh={handleRefreshPrices}
+            onAddToken={() => setIsModalOpen(true)}
+            isRefreshing={isRefreshing}
+            hasTokens={watchlist.length > 0}
+          />
+        )}
 
-        <WatchlistTable onAddToken={() => setIsModalOpen(true)} />
+        {isInitialLoading ? <TableSkeleton /> : <WatchlistTable onAddToken={() => setIsModalOpen(true)} />}
       </div>
 
       <AddTokenModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

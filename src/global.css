@@ -224,6 +224,17 @@ input[type="number"] {
   }
 }
 
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(39, 39, 42, 0.4) 0%,
+    rgba(169, 232, 81, 0.15) 50%,
+    rgba(39, 39, 42, 0.4) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;

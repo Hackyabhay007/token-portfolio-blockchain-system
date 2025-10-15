@@ -5,11 +5,12 @@ const loadState = (): PortfolioState => {
   try {
     const serializedState = localStorage.getItem('portfolioState');
     if (serializedState === null) {
-      return { watchlist: [], lastUpdated: null };
+      return { watchlist: [], lastUpdated: null, isInitialLoading: true };
     }
-    return JSON.parse(serializedState);
+    const state = JSON.parse(serializedState);
+    return { ...state, isInitialLoading: true };
   } catch (err) {
-    return { watchlist: [], lastUpdated: null };
+    return { watchlist: [], lastUpdated: null, isInitialLoading: true };
   }
 };
 
@@ -64,10 +65,13 @@ const portfolioSlice = createSlice({
       state.lastUpdated = new Date().toLocaleString();
       saveState(state);
     },
+    setInitialLoadComplete: (state) => {
+      state.isInitialLoading = false;
+    },
   },
 });
 
-export const { addTokensToWatchlist, removeTokenFromWatchlist, updateHoldings, updatePrices } =
+export const { addTokensToWatchlist, removeTokenFromWatchlist, updateHoldings, updatePrices, setInitialLoadComplete } =
   portfolioSlice.actions;
 
 export default portfolioSlice.reducer;
