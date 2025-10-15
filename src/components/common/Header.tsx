@@ -2,7 +2,7 @@ import { CustomConnectButton } from './CustomConnectButton';
 
 export const Header = () => {
   return (
-    <header style={{ height: '56px' }}>
+    <header className="pt-4 sm:pt-0" style={{ minHeight: '56px' }}>
       <div className="max-w-7xl mx-auto" style={{ padding: '12px' }}>
         <div className="flex items-center justify-between">
           <div className="flex items-center" style={{ gap: '12px' }}>

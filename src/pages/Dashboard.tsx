@@ -36,40 +36,46 @@ export const Dashboard = () => {
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 sm:py-8 lg:px-8">
-      {refreshError && (
-        <div 
-          className="mb-4 animate-fade-in" 
-          style={{ 
-            backgroundColor: '#27272A',
-            borderRadius: '8px',
-            padding: '12px 16px',
-            border: '1px solid #EF4444',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
-          <div style={{ color: '#EF4444', fontSize: '14px' }}>{refreshError}</div>
-          <button
-            onClick={() => setRefreshError(null)}
-            style={{ color: 'var(--text-secondary)', fontSize: '20px', lineHeight: '1' }}
+    <main className="max-w-7xl mx-auto pt-6 pb-4 sm:px-6 sm:py-8 lg:px-8">
+      <div className="px-4 sm:px-0">
+        {refreshError && (
+          <div 
+            className="mb-4 animate-fade-in" 
+            style={{ 
+              backgroundColor: '#27272A',
+              borderRadius: '8px',
+              padding: '12px 16px',
+              border: '1px solid #EF4444',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}
           >
-            ×
-          </button>
-        </div>
-      )}
+            <div style={{ color: '#EF4444', fontSize: '14px' }}>{refreshError}</div>
+            <button
+              onClick={() => setRefreshError(null)}
+              style={{ color: 'var(--text-secondary)', fontSize: '20px', lineHeight: '1' }}
+            >
+              ×
+            </button>
+          </div>
+        )}
+      </div>
       
-      <PortfolioTotal />
+      <div className="mt-6 sm:mt-0">
+        <PortfolioTotal />
+      </div>
 
-      <WatchlistActions
-        onRefresh={handleRefreshPrices}
-        onAddToken={() => setIsModalOpen(true)}
-        isRefreshing={isRefreshing}
-        hasTokens={watchlist.length > 0}
-      />
+      <div className="px-4 sm:px-0">
+        <WatchlistActions
+          onRefresh={handleRefreshPrices}
+          onAddToken={() => setIsModalOpen(true)}
+          isRefreshing={isRefreshing}
+          hasTokens={watchlist.length > 0}
+        />
 
-      <WatchlistTable onAddToken={() => setIsModalOpen(true)} />
+        <WatchlistTable onAddToken={() => setIsModalOpen(true)} />
+      </div>
 
       <AddTokenModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </main>

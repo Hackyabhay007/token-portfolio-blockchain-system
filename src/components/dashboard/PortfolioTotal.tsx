@@ -38,7 +38,7 @@ export const PortfolioTotal = () => {
   }));
 
   return (
-    <div className="mb-4 sm:mb-8 relative" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', padding: '24px' }}>
+    <div className="mb-6 sm:mb-12 relative sm:rounded-xl" style={{ backgroundColor: 'var(--neutral-800)', padding: '24px' }}>
       {/* Mobile Layout - Stacked */}
       <div className="block lg:hidden">
         {/* Total Value */}
