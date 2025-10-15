@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { Token } from '../store/portfolioSlice';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
-const API_KEY = 'CG-GaSU9qKnQGEJCSc9ZPZtvUry';
+const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY || 'CG-DEMO-KEY';
 
 const apiClient = axios.create({
   baseURL: BASE_URL,
