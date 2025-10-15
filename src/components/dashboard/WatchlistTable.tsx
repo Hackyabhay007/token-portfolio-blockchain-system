@@ -161,10 +161,11 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                 </tr>
               </thead>
               <tbody>
-                {currentTokens.map((token: WatchlistToken) => {
+                {currentTokens.map((token: WatchlistToken, index: number) => {
                   const value = token.holdings * token.current_price;
                   const isPositive = token.price_change_percentage_24h >= 0;
                   const sparklineColor = isPositive ? 'var(--color-success)' : 'var(--color-error)';
+                  const isLastRow = index === currentTokens.length - 1;
 
                   return (
                     <tr
@@ -428,9 +429,8 @@ export const WatchlistTable = ({ onAddToken }: WatchlistTableProps = {}) => {
                                   borderRadius: '8px',
                                   padding: '4px',
                                   boxShadow: '0px 0px 0px 1px var(--shadow-darker), 0px 4px 8px 0px var(--shadow-darker), 0px 8px 16px 0px var(--shadow-darker)',
-                                  top: '50%',
+                                  ...(isLastRow ? { bottom: '0' } : { top: '50%', transform: 'translateY(-50%)' }),
                                   right: '100%',
-                                  transform: 'translateY(-50%)',
                                   marginRight: '8px'
                                 }}
                               >
