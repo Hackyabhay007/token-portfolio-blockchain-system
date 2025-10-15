@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../store/store';
 import { updatePrices } from '../store/portfolioSlice';
 import { coinGeckoApi } from '../services/coinGeckoApi';
+import type { WatchlistToken } from '../types';
 import { PortfolioTotal } from '../components/dashboard/PortfolioTotal';
 import { WatchlistTable } from '../components/dashboard/WatchlistTable';
 import { WatchlistActions } from '../components/dashboard/WatchlistActions';
@@ -21,7 +22,7 @@ export const Dashboard = () => {
     setIsRefreshing(true);
     setRefreshError(null);
     try {
-      const tokenIds = watchlist.map((token) => token.id);
+      const tokenIds = watchlist.map((token: WatchlistToken) => token.id);
       const updatedTokens = await coinGeckoApi.getTokensByIds(tokenIds);
       dispatch(updatePrices(updatedTokens));
     } catch (error) {

@@ -1,11 +1,5 @@
 import { useState } from 'react';
-
-interface TokenImageProps {
-  src: string;
-  alt: string;
-  symbol: string;
-  size?: number;
-}
+import type { TokenImageProps } from '../../types';
 
 export const TokenImage = ({ src, alt, symbol, size = 32 }: TokenImageProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);

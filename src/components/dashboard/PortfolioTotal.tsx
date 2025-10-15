@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import type { WatchlistToken } from '../../types';
 
 // Get colors from CSS variables
 const getChartColors = () => {
@@ -21,17 +22,17 @@ export const PortfolioTotal = () => {
   const COLORS = getChartColors();
 
   const portfolioData = watchlist
-    .filter((token) => token.holdings > 0)
-    .map((token) => ({
+    .filter((token: WatchlistToken) => token.holdings > 0)
+    .map((token: WatchlistToken) => ({
       name: token.name,
       symbol: token.symbol,
       value: token.holdings * token.current_price,
       color: COLORS[watchlist.indexOf(token) % COLORS.length],
     }));
 
-  const totalValue = portfolioData.reduce((sum, item) => sum + item.value, 0);
+  const totalValue = portfolioData.reduce((sum: number, item: { value: number }) => sum + item.value, 0);
 
-  const chartData = portfolioData.map((item) => ({
+  const chartData = portfolioData.map((item: { name: string; symbol: string; value: number; color: string }) => ({
     ...item,
     percentage: ((item.value / totalValue) * 100).toFixed(1),
   }));
@@ -87,7 +88,7 @@ export const PortfolioTotal = () => {
                       dataKey="value"
                       strokeWidth={1}
                     >
-                      {chartData.map((entry, index) => (
+                      {chartData.map((entry: { color: string }, index: number) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -102,7 +103,7 @@ export const PortfolioTotal = () => {
 
             {/* Legend */}
             <div className="w-full" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {chartData.map((item, index) => (
+              {chartData.map((item: { name: string; symbol: string; percentage: string; color: string }, index: number) => (
                 <div key={index} style={{ 
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -189,7 +190,7 @@ export const PortfolioTotal = () => {
                       dataKey="value"
                       strokeWidth={1}
                     >
-                      {chartData.map((entry, index) => (
+                      {chartData.map((entry: { color: string }, index: number) => (
                         <Cell key={`cell-${index}`} fill={entry.color} />
                       ))}
                     </Pie>
@@ -204,7 +205,7 @@ export const PortfolioTotal = () => {
 
             {/* Legend */}
             <div className="flex-1 pt-1" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {chartData.map((item, index) => (
+              {chartData.map((item: { name: string; symbol: string; percentage: string; color: string }, index: number) => (
                 <div key={index} style={{ 
                   display: 'flex',
                   justifyContent: 'space-between',

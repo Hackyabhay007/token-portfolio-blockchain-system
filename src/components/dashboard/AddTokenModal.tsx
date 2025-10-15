@@ -2,14 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { addTokensToWatchlist } from '../../store/portfolioSlice';
-import type { Token } from '../../store/portfolioSlice';
+import type { Token, AddTokenModalProps, TokenRowProps } from '../../types';
 import { coinGeckoApi } from '../../services/coinGeckoApi';
 import { TokenImage } from '../common/TokenImage';
-
-interface AddTokenModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const dispatch = useDispatch();
@@ -26,7 +21,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const [initialLoadComplete, setInitialLoadComplete] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Load trending tokens on mount
   useEffect(() => {
@@ -41,7 +36,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       const tokens = await coinGeckoApi.getTrendingTokens();
       // Filter out already added tokens
       const filteredTokens = tokens.filter(
-        (token) => !watchlist.some((w) => w.id === token.id)
+        (token: Token) => !watchlist.some((w: { id: string }) => w.id === token.id)
       );
       setTrendingTokens(filteredTokens);
     } catch (error) {
@@ -65,7 +60,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           const tokens = await coinGeckoApi.searchTokens(searchQuery);
           // Filter out already added tokens
           const filteredTokens = tokens.filter(
-            (token) => !watchlist.some((w) => w.id === token.id)
+            (token: Token) => !watchlist.some((w: { id: string }) => w.id === token.id)
           );
           setSearchResults(filteredTokens);
           setHasMore(tokens.length >= 20);
@@ -103,7 +98,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         const newTokens = await coinGeckoApi.getTopTokens(nextPage, 50);
         // Filter out already added tokens
         const filteredTokens = newTokens.filter(
-          (token) => !watchlist.some((w) => w.id === token.id)
+          (token: Token) => !watchlist.some((w: { id: string }) => w.id === token.id)
         );
         if (filteredTokens.length > 0) {
           setSearchResults((prev) => [...prev, ...filteredTokens]);
@@ -137,7 +132,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       const tokens = await coinGeckoApi.getTopTokens(1, 50);
       // Filter out already added tokens
       const filteredTokens = tokens.filter(
-        (token) => !watchlist.some((w) => w.id === token.id)
+        (token: Token) => !watchlist.some((w: { id: string }) => w.id === token.id)
       );
       setSearchResults(filteredTokens);
       setHasMore(tokens.length >= 50);
@@ -400,14 +395,6 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
     </div>
   );
 };
-
-interface TokenRowProps {
-  token: Token;
-  isSelected: boolean;
-  onToggle: () => void;
-  index?: number;
-  animate?: boolean;
-}
 
 const TokenRow = ({ token, isSelected, onToggle, index = 0, animate = false }: TokenRowProps) => {
   return (

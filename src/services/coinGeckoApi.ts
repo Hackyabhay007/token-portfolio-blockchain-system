@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { Token } from '../store/portfolioSlice';
+import type { Token } from '../types';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 const API_KEY = import.meta.env.VITE_COINGECKO_API_KEY || 'CG-DEMO-KEY';

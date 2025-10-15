@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import portfolioReducer from './portfolioSlice';
+import type { PortfolioState } from '../types';
 
 export const store = configureStore({
   reducer: {
@@ -7,5 +8,8 @@ export const store = configureStore({
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = {
+  portfolio: PortfolioState;
+};
+
 export type AppDispatch = typeof store.dispatch;

@@ -4,6 +4,7 @@ import type { RootState } from '../../store/store';
 import { updateHoldings, removeTokenFromWatchlist } from '../../store/portfolioSlice';
 import { Sparkline } from './Sparkline';
 import { TokenImage } from '../common/TokenImage';
+import type { WatchlistToken } from '../../types';
 
 export const WatchlistTable = () => {
   const dispatch = useDispatch();
@@ -114,7 +115,7 @@ export const WatchlistTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentTokens.map((token) => {
+                {currentTokens.map((token: WatchlistToken) => {
                   const value = token.holdings * token.current_price;
                   const isPositive = token.price_change_percentage_24h >= 0;
                   const sparklineColor = isPositive ? '#10B981' : '#EF4444';
