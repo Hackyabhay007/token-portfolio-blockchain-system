@@ -29,7 +29,8 @@ export const WatchlistTable = () => {
   const handleEditHoldings = (id: string, currentHoldings: number) => {
     setOpenMenuId(null); // Close menu when editing
     setEditingId(id);
-    setEditValue(''); // Start with empty input
+    // Show current value if greater than 0, otherwise empty
+    setEditValue(currentHoldings > 0 ? currentHoldings.toString() : '');
   };
 
   const handleSaveHoldings = async (id: string) => {
@@ -195,32 +196,77 @@ export const WatchlistTable = () => {
                       <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', width: '180px' }}>
                         {editingId === token.id ? (
                           <div className="flex items-center animate-scale-in" style={{ gap: '8px' }}>
-                            <input
-                              type="number"
-                              value={editValue}
-                              onChange={(e) => setEditValue(e.target.value)}
-                              onKeyDown={(e) => handleKeyPress(e, token.id)}
-                              onBlur={() => {
-                                // Close editing if clicked outside and value is empty
-                                if (!editValue || editValue.trim() === '') {
-                                  setTimeout(() => setEditingId(null), 150);
-                                }
-                              }}
-                              className="text-sm focus:outline-none"
-                              style={{ 
-                                width: '109px',
-                                height: '32px',
-                                paddingLeft: '8px',
-                                paddingRight: '8px',
-                                backgroundColor: 'var(--bg-tertiary)', 
-                                borderRadius: '6px',
-                                color: 'var(--text-primary)',
-                                boxShadow: '0px 0px 0px 1px #A9E851, 0px 0px 0px 4px #A9E85133',
-                                transition: 'all 0.2s ease'
-                              }}
-                              placeholder="Enter amount"
-                              autoFocus
-                            />
+                            <div className="number-input-wrapper">
+                              <input
+                                type="number"
+                                value={editValue}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  // Only allow numbers and limit to 5 digits before decimal
+                                  if (value === '' || /^\d{0,5}(\.\d*)?$/.test(value)) {
+                                    setEditValue(value);
+                                  }
+                                }}
+                                onKeyDown={(e) => handleKeyPress(e, token.id)}
+                                onBlur={(e) => {
+                                  // Don't close if clicking on spinner buttons
+                                  if (!e.relatedTarget?.classList.contains('spinner-button')) {
+                                    if (!editValue || editValue.trim() === '') {
+                                      setTimeout(() => setEditingId(null), 150);
+                                    }
+                                  }
+                                }}
+                                className="text-sm focus:outline-none"
+                                style={{ 
+                                  width: '109px',
+                                  height: '32px',
+                                  paddingLeft: '8px',
+                                  paddingRight: '28px',
+                                  backgroundColor: 'var(--bg-tertiary)', 
+                                  borderRadius: '6px',
+                                  color: 'var(--text-primary)',
+                                  boxShadow: '0px 0px 0px 1px #A9E851, 0px 0px 0px 4px #A9E85133',
+                                  transition: 'all 0.2s ease'
+                                }}
+                                placeholder="Enter amount"
+                                min="0"
+                                max="99999"
+                                step="any"
+                                autoFocus
+                              />
+                              <div className="number-spinner">
+                                <button
+                                  type="button"
+                                  className="spinner-button"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    const currentVal = parseFloat(editValue) || 0;
+                                    if (currentVal < 99999) {
+                                      setEditValue((currentVal + 1).toString());
+                                    }
+                                  }}
+                                >
+                                  <svg viewBox="0 0 8 6" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 0L8 6H0L4 0Z" />
+                                  </svg>
+                                </button>
+                                <button
+                                  type="button"
+                                  className="spinner-button"
+                                  onMouseDown={(e) => {
+                                    e.preventDefault();
+                                    const currentVal = parseFloat(editValue) || 0;
+                                    if (currentVal > 0) {
+                                      setEditValue(Math.max(0, currentVal - 1).toString());
+                                    }
+                                  }}
+                                >
+                                  <svg viewBox="0 0 8 6" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 6L0 0H8L4 6Z" />
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
                             <button
                               onClick={() => handleSaveHoldings(token.id)}
                               disabled={isSaving || !editValue || editValue.trim() === ''}
@@ -335,7 +381,6 @@ export const WatchlistTable = () => {
                                 <button
                                   onClick={() => {
                                     handleEditHoldings(token.id, token.holdings);
-                                    setOpenMenuId(null);
                                   }}
                                   className="w-full text-left text-sm transition-colors flex items-center gap-2"
                                   style={{ 
