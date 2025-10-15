@@ -21,6 +21,8 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
   const [isLoadingTrending, setIsLoadingTrending] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [trendingError, setTrendingError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
 
   const loadTrendingTokens = async () => {
     setIsLoadingTrending(true);
+    setTrendingError(null);
     try {
       const tokens = await coinGeckoApi.getTrendingTokens();
       // Filter out already added tokens
@@ -45,6 +48,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       setTrendingTokens(filteredTokens);
     } catch (error) {
       console.error('Error loading trending tokens:', error);
+      setTrendingError('Failed to load trending tokens');
     } finally {
       setIsLoadingTrending(false);
     }
@@ -60,6 +64,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       searchTimeoutRef.current = setTimeout(async () => {
         setIsSearching(true);
         setPage(1);
+        setError(null);
         try {
           const tokens = await coinGeckoApi.searchTokens(searchQuery);
           // Filter out already added tokens
@@ -70,6 +75,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           setHasMore(tokens.length >= 20);
         } catch (error) {
           console.error('Error searching tokens:', error);
+          setError('Failed to search tokens. Please try again.');
         } finally {
           setIsSearching(false);
         }
@@ -111,6 +117,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
         }
       } catch (error) {
         console.error('Error loading more tokens:', error);
+        setError('Failed to load more tokens');
       } finally {
         setIsSearching(false);
       }
@@ -127,6 +134,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
 
   const loadInitialTokens = async () => {
     setIsSearching(true);
+    setError(null);
     try {
       const tokens = await coinGeckoApi.getTopTokens(1, 50);
       // Filter out already added tokens
@@ -137,6 +145,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
       setHasMore(tokens.length >= 50);
     } catch (error) {
       console.error('Error loading initial tokens:', error);
+      setError('Failed to load tokens. Please check your connection.');
     } finally {
       setIsSearching(false);
     }
@@ -247,34 +256,90 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
           }}
         >
           {/* Trending Section */}
-          {!searchQuery && trendingTokens.length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
-              <div className="space-y-1">
-                {trendingTokens.map((token) => (
-                  <TokenRow
-                    key={token.id}
-                    token={token}
-                    isSelected={selectedTokens.has(token.id)}
-                    onToggle={() => toggleTokenSelection(token.id)}
-                  />
-                ))}
-              </div>
-            </div>
+          {!searchQuery && (
+            <>
+              {isLoadingTrending ? (
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
+                  <div className="py-8 text-center" style={{ color: 'var(--text-secondary)' }}>
+                    <div className="animate-spin w-6 h-6 border-2 border-[#A9E851] border-t-transparent rounded-full mx-auto mb-2"></div>
+                    <div className="text-sm">Loading trending...</div>
+                  </div>
+                </div>
+              ) : trendingError ? (
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
+                  <div className="py-8 text-center">
+                    <div className="text-sm" style={{ color: '#EF4444' }}>{trendingError}</div>
+                    <button
+                      onClick={loadTrendingTokens}
+                      className="mt-3 text-sm transition-colors"
+                      style={{ color: '#A9E851' }}
+                      onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                      onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                    >
+                      Try again
+                    </button>
+                  </div>
+                </div>
+              ) : trendingTokens.length > 0 ? (
+                <div className="mb-6">
+                  <h3 className="text-sm font-medium mb-3" style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>Trending</h3>
+                  <div className="space-y-1">
+                    {trendingTokens.map((token) => (
+                      <TokenRow
+                        key={token.id}
+                        token={token}
+                        isSelected={selectedTokens.has(token.id)}
+                        onToggle={() => toggleTokenSelection(token.id)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </>
           )}
 
           {/* Search Results / Top Tokens */}
           <div>
             {searchQuery && (
-              <h3 className="text-sm font-semibold text-gray-400 mb-3">Search Results</h3>
+              <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--text-secondary)' }}>Search Results</h3>
             )}
-            {isSearching && searchResults.length === 0 ? (
-              <div className="py-12 text-center text-gray-500">
-                <div className="animate-spin w-8 h-8 border-2 border-[#a3e635] border-t-transparent rounded-full mx-auto mb-2"></div>
-                Loading...
+            {error ? (
+              <div className="py-12 text-center">
+                <div className="text-sm mb-3" style={{ color: '#EF4444' }}>{error}</div>
+                <button
+                  onClick={() => {
+                    if (searchQuery) {
+                      setSearchQuery('');
+                      setError(null);
+                    } else {
+                      loadInitialTokens();
+                    }
+                  }}
+                  className="text-sm transition-colors"
+                  style={{ color: '#A9E851' }}
+                  onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+                >
+                  {searchQuery ? 'Clear search' : 'Try again'}
+                </button>
+              </div>
+            ) : isSearching && searchResults.length === 0 ? (
+              <div className="py-12 text-center" style={{ color: 'var(--text-secondary)' }}>
+                <div className="animate-spin w-8 h-8 border-2 border-[#A9E851] border-t-transparent rounded-full mx-auto mb-2"></div>
+                <div className="text-sm">Loading...</div>
               </div>
             ) : searchResults.length === 0 && searchQuery ? (
-              <div className="py-12 text-center text-gray-500">No tokens found</div>
+              <div className="py-12 text-center">
+                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>No tokens found</div>
+                <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>Try a different search term</div>
+              </div>
+            ) : searchResults.length === 0 && !searchQuery ? (
+              <div className="py-12 text-center">
+                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>All tokens have been added</div>
+                <div className="text-xs mt-2" style={{ color: 'var(--text-tertiary)' }}>Search for more tokens</div>
+              </div>
             ) : (
               <div className="space-y-1">
                 {searchResults.map((token) => (
@@ -286,7 +351,7 @@ export const AddTokenModal = ({ isOpen, onClose }: AddTokenModalProps) => {
                   />
                 ))}
                 {isSearching && searchResults.length > 0 && (
-                  <div className="py-4 text-center text-gray-500 text-sm">Loading more...</div>
+                  <div className="py-4 text-center text-sm" style={{ color: 'var(--text-secondary)' }}>Loading more...</div>
                 )}
               </div>
             )}

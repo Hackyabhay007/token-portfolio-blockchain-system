@@ -62,8 +62,35 @@ export const WatchlistTable = () => {
     <div className="overflow-hidden animate-fade-in" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(161, 161, 170, 0.2)' }}>
       {/* Table */}
       {watchlist.length === 0 ? (
-        <div className="px-6 py-12 text-center" style={{ color: 'var(--text-secondary)' }}>
-          No tokens in watchlist. Click "Add Token" to get started.
+        <div className="px-6 py-16 text-center">
+          <div style={{ 
+            width: '48px', 
+            height: '48px', 
+            borderRadius: '50%', 
+            backgroundColor: 'rgba(169, 232, 81, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 16px'
+          }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5V19M5 12H19" stroke="#A9E851" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+          <div style={{ 
+            color: 'var(--text-primary)', 
+            fontSize: '16px', 
+            fontWeight: 500,
+            marginBottom: '8px'
+          }}>
+            No tokens in watchlist
+          </div>
+          <div style={{ 
+            color: 'var(--text-secondary)', 
+            fontSize: '14px'
+          }}>
+            Click "Add Token" to start tracking your portfolio
+          </div>
         </div>
       ) : (
         <>
