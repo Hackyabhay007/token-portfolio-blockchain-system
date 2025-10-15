@@ -48,8 +48,20 @@ export const CustomConnectButton = () => {
                   <button
                     onClick={openConnectModal}
                     type="button"
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-black transition-all hover:opacity-90"
-                    style={{ backgroundColor: 'var(--accent-primary)' }}
+                    className="flex items-center font-medium text-black transition-all hover:opacity-90"
+                    style={{ 
+                      backgroundColor: '#A9E851',
+                      width: '136px',
+                      height: '32px',
+                      borderRadius: '100px',
+                      gap: '6px',
+                      paddingTop: '6px',
+                      paddingRight: '10px',
+                      paddingBottom: '6px',
+                      paddingLeft: '10px',
+                      boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
+                      justifyContent: 'center'
+                    }}
                   >
                     <WalletIcon />
                     <span>Connect Wallet</span>
@@ -73,8 +85,20 @@ export const CustomConnectButton = () => {
                 <button
                   onClick={openAccountModal}
                   type="button"
-                  className="flex items-center gap-2 px-6 py-2.5 rounded-full font-medium text-black transition-all hover:opacity-90"
-                  style={{ backgroundColor: 'var(--accent-primary)' }}
+                  className="flex items-center font-medium text-black transition-all hover:opacity-90"
+                  style={{ 
+                    backgroundColor: '#A9E851',
+                    minWidth: '136px',
+                    height: '32px',
+                    borderRadius: '100px',
+                    gap: '6px',
+                    paddingTop: '6px',
+                    paddingRight: '10px',
+                    paddingBottom: '6px',
+                    paddingLeft: '10px',
+                    boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
+                    justifyContent: 'center'
+                  }}
                 >
                   <WalletIcon />
                   <span>{account.displayName}</span>

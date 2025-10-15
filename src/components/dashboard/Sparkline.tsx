@@ -10,12 +10,12 @@ export const Sparkline = ({ data, color }: SparklineProps) => {
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <LineChart data={chartData}>
+      <LineChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
         <Line
-          type="monotone"
+          type="natural"
           dataKey="value"
           stroke={color}
-          strokeWidth={1.5}
+          strokeWidth={1}
           dot={false}
           isAnimationActive={false}
         />

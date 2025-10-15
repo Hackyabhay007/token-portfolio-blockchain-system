@@ -55,8 +55,14 @@ export const PortfolioTotal = () => {
             ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
           {lastUpdated && (
-            <div className="text-xs mt-2" style={{ color: 'var(--text-secondary)' }}>
-              Last updated: {lastUpdated}
+            <div className="mt-2" style={{ 
+              color: '#A1A1AA',
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '20px',
+              letterSpacing: '0%'
+            }}>
+              Last updated: {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}
             </div>
           )}
         </div>
@@ -66,11 +72,12 @@ export const PortfolioTotal = () => {
           <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
           <div className="flex flex-col items-center" style={{ gap: '32px' }}>
             {/* Chart */}
-            <div className="w-48 h-48 flex-shrink-0">
+            <div className="w-48 h-48 flex-shrink-0" style={{ pointerEvents: 'none', userSelect: 'none' }}>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
+                    
                       data={chartData}
                       cx="50%"
                       cy="50%"
@@ -94,19 +101,33 @@ export const PortfolioTotal = () => {
             </div>
 
             {/* Legend */}
-            <div className="w-full space-y-3">
+            <div className="w-full" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {chartData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: item.color }}
-                    ></div>
-                    <span style={{ color: 'var(--text-primary)' }}>
-                      {item.name} ({item.symbol.toUpperCase()})
-                    </span>
+                <div key={index} style={{ 
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '16px'
+                }}>
+                  <div style={{ 
+                    color: item.color,
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    lineHeight: '20px',
+                    letterSpacing: '0%'
+                  }}>
+                    {item.name} ({item.symbol.toUpperCase()})
                   </div>
-                  <span style={{ color: 'var(--text-secondary)' }}>{item.percentage}%</span>
+                  <div style={{ 
+                    color: '#A1A1AA',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    lineHeight: '20px',
+                    letterSpacing: '0%',
+                    textAlign: 'right'
+                  }}>
+                    {item.percentage}%
+                  </div>
                 </div>
               ))}
               {chartData.length === 0 && (
@@ -120,22 +141,31 @@ export const PortfolioTotal = () => {
       {/* Desktop Layout - Side by Side */}
       <div className="hidden lg:grid lg:grid-cols-2" style={{ gap: '19px' }}>
         {/* Left Side - Total Value */}
-        <div className="flex flex-col justify-start pt-2">
-          <div className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
-          <div 
-            className="font-medium mb-16"
-            style={{ 
-              fontSize: '48px',
-              lineHeight: '110%',
-              letterSpacing: '-0.0224em',
-              fontWeight: 500
-            }}
-          >
-            ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        <div className="flex flex-col justify-between pt-2">
+          <div>
+            <div className="text-sm mb-3" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
+            <div 
+              style={{ 
+                fontSize: '48px',
+                lineHeight: '110%',
+                letterSpacing: '-2.24%',
+                fontWeight: 500,
+                fontStyle: 'normal',
+                color: '#F4F4F5'
+              }}
+            >
+              ${totalValue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
           </div>
           {lastUpdated && (
-            <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>
-              Last updated: {lastUpdated}
+            <div style={{ 
+              color: '#A1A1AA',
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '20px',
+              letterSpacing: '0%'
+            }}>
+              Last updated: {new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })}
             </div>
           )}
         </div>
@@ -145,7 +175,7 @@ export const PortfolioTotal = () => {
           <div className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Portfolio Total</div>
           <div className="flex items-start gap-8">
             {/* Chart */}
-            <div className="w-36 h-36 flex-shrink-0">
+            <div className="w-36 h-36 flex-shrink-0" style={{ pointerEvents: 'none', userSelect: 'none' }}>
               {chartData.length > 0 ? (
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
@@ -173,19 +203,33 @@ export const PortfolioTotal = () => {
             </div>
 
             {/* Legend */}
-            <div className="flex-1 space-y-2.5 pt-1">
+            <div className="flex-1 pt-1" style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {chartData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-3 h-3 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: item.color }}
-                    ></div>
-                    <span style={{ color: 'var(--text-primary)' }}>
-                      {item.name} ({item.symbol.toUpperCase()})
-                    </span>
+                <div key={index} style={{ 
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '16px'
+                }}>
+                  <div style={{ 
+                    color: item.color,
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    lineHeight: '20px',
+                    letterSpacing: '0%'
+                  }}>
+                    {item.name} ({item.symbol.toUpperCase()})
                   </div>
-                  <span className="ml-4" style={{ color: 'var(--text-secondary)' }}>{item.percentage}%</span>
+                  <div style={{ 
+                    color: '#A1A1AA',
+                    fontWeight: 500,
+                    fontSize: '14px',
+                    lineHeight: '20px',
+                    letterSpacing: '0%',
+                    textAlign: 'right'
+                  }}>
+                    {item.percentage}%
+                  </div>
                 </div>
               ))}
               {chartData.length === 0 && (

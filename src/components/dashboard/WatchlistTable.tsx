@@ -11,6 +11,8 @@ export const WatchlistTable = () => {
   const [editValue, setEditValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const [removingId, setRemovingId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   const itemsPerPage = 8;
 
   const totalPages = Math.max(1, Math.ceil(watchlist.length / itemsPerPage));
@@ -28,9 +30,13 @@ export const WatchlistTable = () => {
     setEditValue(currentHoldings.toString());
   };
 
-  const handleSaveHoldings = (id: string) => {
+  const handleSaveHoldings = async (id: string) => {
+    setIsSaving(true);
     const value = parseFloat(editValue) || 0;
     dispatch(updateHoldings({ id, holdings: value }));
+    // Simulate a small delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+    setIsSaving(false);
     setEditingId(null);
   };
 
@@ -43,12 +49,17 @@ export const WatchlistTable = () => {
   };
 
   const handleRemoveToken = (id: string) => {
-    dispatch(removeTokenFromWatchlist(id));
+    setRemovingId(id);
     setOpenMenuId(null);
+    // Wait for animation to complete before removing
+    setTimeout(() => {
+      dispatch(removeTokenFromWatchlist(id));
+      setRemovingId(null);
+    }, 200);
   };
 
   return (
-    <div className="overflow-hidden" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(161, 161, 170, 0.2)' }}>
+    <div className="overflow-hidden animate-fade-in" style={{ backgroundColor: 'var(--neutral-800)', borderRadius: '12px', borderWidth: '1px', borderStyle: 'solid', borderColor: 'rgba(161, 161, 170, 0.2)' }}>
       {/* Table */}
       {watchlist.length === 0 ? (
         <div className="px-6 py-12 text-center" style={{ color: 'var(--text-secondary)' }}>
@@ -57,7 +68,7 @@ export const WatchlistTable = () => {
       ) : (
         <>
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full" style={{ minWidth: '800px' }}>
               <thead style={{ backgroundColor: 'var(--bg-component)' }}>
                 <tr className="text-left" style={{ color: 'var(--text-secondary)', borderBottom: '1px solid rgba(161, 161, 170, 0.2)' }}>
                   <th style={{ paddingLeft: '24px', paddingRight: '12px', paddingTop: '16px', paddingBottom: '16px', fontSize: '14px', fontWeight: 500 }}>Token</th>
@@ -78,7 +89,7 @@ export const WatchlistTable = () => {
                   return (
                     <tr
                       key={token.id}
-                      className="transition-colors"
+                      className={`transition-colors ${removingId === token.id ? 'animate-row-out' : 'animate-row-in'}`}
                       style={{ 
                         backgroundColor: 'var(--bg-primary)',
                         height: '48px',
@@ -103,7 +114,17 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* Price */}
-                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', fontSize: '14px', fontWeight: 400 }}>
+                      <td style={{ 
+                        paddingLeft: '12px', 
+                        paddingRight: '12px', 
+                        paddingTop: '12px', 
+                        paddingBottom: '12px', 
+                        fontSize: '13px', 
+                        fontWeight: 400,
+                        lineHeight: '20px',
+                        letterSpacing: '0%',
+                        color: '#A1A1AA'
+                      }}>
                         ${token.current_price.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -114,9 +135,11 @@ export const WatchlistTable = () => {
                       <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
                         <span
                           style={{
-                            fontSize: '14px',
+                            fontSize: '13px',
                             fontWeight: 400,
-                            color: isPositive ? '#10B981' : '#EF4444'
+                            lineHeight: '20px',
+                            letterSpacing: '0%',
+                            color: '#A1A1AA'
                           }}
                         >
                           {isPositive ? '+' : ''}
@@ -139,7 +162,7 @@ export const WatchlistTable = () => {
                       </td>
 
                       {/* Holdings */}
-                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px' }}>
+                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', width: '180px' }}>
                         {editingId === token.id ? (
                           <div className="flex items-center" style={{ gap: '8px' }}>
                             <input
@@ -163,32 +186,55 @@ export const WatchlistTable = () => {
                             />
                             <button
                               onClick={() => handleSaveHoldings(token.id)}
-                              className="text-black text-sm font-semibold transition-colors"
+                              disabled={isSaving}
+                              className="text-black text-sm font-semibold transition-colors flex items-center justify-center"
                               style={{ 
                                 width: '51px',
                                 height: '32px',
-                                backgroundColor: 'var(--accent-primary)',
+                                backgroundColor: isSaving ? 'var(--accent-hover)' : 'var(--accent-primary)',
                                 borderRadius: '6px',
                                 paddingTop: '6px',
                                 paddingBottom: '6px',
                                 paddingLeft: '10px',
-                                paddingRight: '10px'
+                                paddingRight: '10px',
+                                opacity: isSaving ? 0.7 : 1,
+                                cursor: isSaving ? 'not-allowed' : 'pointer'
                               }}
-                              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-hover)'}
-                              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--accent-primary)'}
+                              onMouseEnter={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--accent-hover)')}
+                              onMouseLeave={(e) => !isSaving && (e.currentTarget.style.backgroundColor = 'var(--accent-primary)')}
                             >
-                              Save
+                              {isSaving ? (
+                                <div className="animate-spin" style={{ width: '14px', height: '14px', border: '2px solid #000', borderTopColor: 'transparent', borderRadius: '50%' }}></div>
+                              ) : (
+                                'Save'
+                              )}
                             </button>
                           </div>
                         ) : (
-                          <div style={{ fontSize: '14px', fontWeight: 400 }}>
+                          <div style={{ 
+                            fontSize: '13px', 
+                            fontWeight: 400,
+                            lineHeight: '20px',
+                            letterSpacing: '0%',
+                            color: '#F4F4F5'
+                          }}>
                             {token.holdings.toFixed(4)}
                           </div>
                         )}
                       </td>
 
                       {/* Value */}
-                      <td style={{ paddingLeft: '12px', paddingRight: '12px', paddingTop: '12px', paddingBottom: '12px', fontSize: '14px', fontWeight: 400 }}>
+                      <td style={{ 
+                        paddingLeft: '12px', 
+                        paddingRight: '12px', 
+                        paddingTop: '12px', 
+                        paddingBottom: '12px', 
+                        fontSize: '13px', 
+                        fontWeight: 400,
+                        lineHeight: '20px',
+                        letterSpacing: '0%',
+                        color: '#F4F4F5'
+                      }}>
                         ${value.toLocaleString('en-US', {
                           minimumFractionDigits: 2,
                           maximumFractionDigits: 2,
@@ -202,9 +248,16 @@ export const WatchlistTable = () => {
                             onClick={() =>
                               setOpenMenuId(openMenuId === token.id ? null : token.id)
                             }
-                            className="transition-opacity hover:opacity-80"
+                            className="transition-opacity hover:opacity-80 flex items-center justify-center"
+                            style={{
+                              width: '28px',
+                              height: '28px',
+                              borderRadius: '6px',
+                              padding: '6.5px',
+                              backgroundColor: 'transparent'
+                            }}
                           >
-                            <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '24px', height: '24px' }} />
+                            <img src="/icons/three-dots.svg" alt="Menu" style={{ width: '15px', height: '15px' }} />
                           </button>
 
                           {openMenuId === token.id && (
@@ -214,7 +267,7 @@ export const WatchlistTable = () => {
                                 onClick={() => setOpenMenuId(null)}
                               ></div>
                               <div 
-                                className="absolute z-20 overflow-hidden" 
+                                className="absolute z-20 overflow-hidden animate-slide-down" 
                                 style={{ 
                                   width: '144px',
                                   height: '72px',

@@ -20,9 +20,9 @@ export const Button = ({
   
   const variantStyles = {
     primary: {
-      backgroundColor: 'var(--accent-primary)',
+      backgroundColor: '#A9E851',
       color: '#000000',
-      hoverColor: 'var(--accent-hover)',
+      hoverColor: '#bef264',
       borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
@@ -32,11 +32,12 @@ export const Button = ({
       paddingBottom: '8px',
       gap: '6px',
       lineHeight: '20px',
+      boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #1F661966, 0px 0px 0px 1px #1F6619',
     },
     secondary: {
-      backgroundColor: 'var(--bg-tertiary)',
+      backgroundColor: '#FFFFFF0A',
       color: 'var(--text-primary)',
-      hoverColor: '#3d4149',
+      hoverColor: '#FFFFFF14',
       borderRadius: '6px',
       height: '36px',
       fontSize: '14px',
@@ -46,6 +47,7 @@ export const Button = ({
       paddingBottom: '8px',
       gap: '6px',
       lineHeight: '20px',
+      boxShadow: '0px 0.75px 0px 0px #FFFFFF33 inset, 0px 1px 2px 0px #0000001F, 0px 0px 0px 1px #00000014',
     },
     danger: {
       backgroundColor: '#EF4444',
@@ -60,6 +62,7 @@ export const Button = ({
       paddingBottom: '8px',
       gap: '6px',
       lineHeight: '20px',
+      boxShadow: 'none',
     },
   };
 
@@ -82,6 +85,7 @@ export const Button = ({
         lineHeight: currentVariant.lineHeight,
         fontWeight: 500,
         letterSpacing: '0%',
+        boxShadow: currentVariant.boxShadow,
       }}
       onMouseEnter={(e) => {
         if (!disabled && !isLoading) {
